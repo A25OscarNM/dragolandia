@@ -27,12 +27,17 @@ public class Monstruo {
     public Monstruo() {
     }
 
-    public Monstruo(int id, String nombre, int vida, TipoMonstruo tipo, int fuerza) {
+    public Monstruo(int id, String nombre, int vida, TipoMonstruo tipo) {
         this.id = id;
         this.nombre = nombre;
         this.vida = vida;
         this.tipo = tipo;
-        this.fuerza = fuerza;
+        switch (tipo) {
+            case OGRO -> fuerza = 30;
+            case TROLL -> fuerza = 20;
+            case ESPECTRO -> fuerza = 15;
+            default -> fuerza = 5;
+        }
     }
 
     /**

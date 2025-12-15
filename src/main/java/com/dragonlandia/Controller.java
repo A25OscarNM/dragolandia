@@ -48,7 +48,7 @@ public class Controller {
         return mago;
     }
 
-    public Monstruo crearMonstruo(String nombre, int vida, int tipo, int fuerza) {
+    public Monstruo crearMonstruo(String nombre, int vida, int tipo) {
         Session session = null;
 
         Monstruo monstruo = null;
@@ -57,7 +57,7 @@ public class Controller {
 
             session = factory.getCurrentSession();
             Transaction tx = session.beginTransaction();
-            monstruo = new Monstruo(0, nombre, vida, TipoMonstruo.values()[tipo], fuerza);
+            monstruo = new Monstruo(0, nombre, vida, TipoMonstruo.values()[tipo]);
             session.persist(monstruo);
             tx.commit();
 
@@ -139,7 +139,7 @@ public class Controller {
         return hechizo;
     }
 
-    public ArrayList<Monstruo> getMonstruos() {
+    public static ArrayList<Monstruo> getMonstruos() {
         Session session = null;
         ArrayList<Monstruo> listaMonstruos = null;
 
@@ -157,7 +157,7 @@ public class Controller {
         return listaMonstruos;
     }
 
-    public ArrayList<Bosque> getBosques() {
+    public static ArrayList<Bosque> getBosques() {
         Session session = null;
         ArrayList<Bosque> listaBosques = null;
 
@@ -175,4 +175,49 @@ public class Controller {
         return listaBosques;
     }
 
+    public static ArrayList<Hechizo> getHechizos() {
+        Session session = null;
+        ArrayList<Hechizo> listaHechizos = null;
+
+        try (SessionFactory factory = (new Configuration()).configure().buildSessionFactory();) {
+
+            session = factory.getCurrentSession();
+            Transaction tx = session.beginTransaction();
+            listaHechizos = (ArrayList<Hechizo>) session.createQuery("from Hechizo", Hechizo.class).list();
+            tx.commit();
+
+        } catch (HibernateException ex) {
+            ex.printStackTrace();
+        }
+
+        return listaHechizos;
+    }
+
+    public static ArrayList<Monstruo> getMonstruosPosibles() {
+        Session session = null;
+        ArrayList<Monstruo> listaMonstruos = null;
+
+        try (SessionFactory factory = (new Configuration()).configure().buildSessionFactory();) {
+
+            session = factory.getCurrentSession();
+            Transaction tx = session.beginTransaction();
+            listaMonstruos = (ArrayList<Monstruo>) session.createQuery("SELECT * from Monstruo ", Monstruo.class)
+                    .list();
+            tx.commit();
+
+        } catch (HibernateException ex) {
+            ex.printStackTrace();
+        }
+
+        return listaMonstruos;
+    }
+
+    public void showAllMonstruos() {
+        ArrayList<Monstruo> monstruos = getMonstruos();
+        for (Monstruo monstruo : monstruos) {
+            vista.getPanelLateral().addMonstruo(monstruo.getId(), monstruo.getNombre(), monstruo.getVida(),
+                    monstruo.getTipo().ordinal(),
+                    monstruo.getFuerza());
+        }
+    }
 }

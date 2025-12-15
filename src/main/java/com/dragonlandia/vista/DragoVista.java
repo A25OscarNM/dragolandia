@@ -3,6 +3,7 @@ package com.dragonlandia.vista;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
+import java.util.Random;
 
 import javax.swing.JFrame;
 import javax.swing.JMenu;
@@ -12,6 +13,8 @@ import javax.swing.JOptionPane;
 
 import com.dragonlandia.Controller;
 import com.dragonlandia.modelo.Bosque;
+import com.dragonlandia.modelo.Hechizo;
+import com.dragonlandia.modelo.Mago;
 import com.dragonlandia.modelo.Monstruo;
 
 public class DragoVista extends JFrame {
@@ -23,13 +26,14 @@ public class DragoVista extends JFrame {
     private PanelMonstruo panelMonstruo;
     private PanelBosque panelBosque;
     private PanelDragon panelDragon;
+    private PanelLateral panelLateral;
     private Controller app;
 
     public DragoVista(Controller app) {
         this.app = app;
 
         setTitle("Dragolandia");
-        setBounds(500, 500, 900, 500);
+        setBounds(500, 500, 1200, 500);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setLayout(null);
 
@@ -38,11 +42,13 @@ public class DragoVista extends JFrame {
         panelMonstruo = new PanelMonstruo();
         panelBosque = new PanelBosque();
         panelDragon = new PanelDragon();
+        panelLateral = new PanelLateral();
 
         add(panelMago);
         add(panelMonstruo);
         add(panelBosque);
         add(panelDragon);
+        add(panelLateral);
 
         // Mostrar solo Mago por defecto
         panelMago.setVisible(true);
@@ -51,23 +57,37 @@ public class DragoVista extends JFrame {
         panelBosque.recargarMonstruos(app.getMonstruos());
         panelDragon.setVisible(false);
         panelDragon.recargarBosques(app.getBosques());
+        panelLateral.setVisible(false);
 
         panelMago.btnSave.addActionListener(e -> {
             String nombre = panelMago.txtNombre.getText();
             int vida = Integer.parseInt(panelMago.txtVida.getText());
             int nivelMagia = Integer.parseInt(panelMago.txtNivelMagia.getText());
 
-            app.crearMago(nombre, vida, nivelMagia);
+            Mago mago = app.crearMago(nombre, vida, nivelMagia);
             panelMago.limpiarCampos();
+
+            ArrayList<Hechizo> hechizos = app.getHechizos();
+            Random rand = new Random();
+
+            int nHechizo1 = rand.nextInt(hechizos.size());
+            int nHechizo2 = rand.nextInt(hechizos.size());
+
+            while (nHechizo1 == nHechizo2) {
+                nHechizo2 = rand.nextInt(hechizos.size());
+            }
+
+            app.crearConjuro(mago, hechizos.get(nHechizo1));
+            app.crearConjuro(mago, hechizos.get(nHechizo2));
+
         });
 
         panelMonstruo.btnSave.addActionListener(e -> {
             String nombre = panelMonstruo.txtNombre.getText();
             int vida = Integer.parseInt(panelMonstruo.txtVida.getText());
-            int fuerza = Integer.parseInt(panelMonstruo.txtFuerza.getText());
             int tipo = panelMonstruo.cbTipo.getSelectedIndex();
 
-            app.crearMonstruo(nombre, vida, tipo, fuerza);
+            app.crearMonstruo(nombre, vida, tipo);
             panelMonstruo.limpiarCampos();
             panelBosque.recargarMonstruos(app.getMonstruos());
         });
@@ -136,6 +156,7 @@ public class DragoVista extends JFrame {
                 panelMago.setVisible(true);
                 panelBosque.setVisible(false);
                 panelDragon.setVisible(false);
+                panelLateral.setVisible(false);
                 validate();
                 repaint();
             }
@@ -147,6 +168,7 @@ public class DragoVista extends JFrame {
                 panelMonstruo.setVisible(true);
                 panelBosque.setVisible(false);
                 panelDragon.setVisible(false);
+                panelLateral.setVisible(false);
                 validate();
                 repaint();
             }
@@ -158,6 +180,7 @@ public class DragoVista extends JFrame {
                 panelMonstruo.setVisible(false);
                 panelBosque.setVisible(true);
                 panelDragon.setVisible(false);
+                panelLateral.setVisible(true);
                 validate();
                 repaint();
             }
@@ -169,9 +192,14 @@ public class DragoVista extends JFrame {
                 panelMonstruo.setVisible(false);
                 panelBosque.setVisible(false);
                 panelDragon.setVisible(true);
+                panelLateral.setVisible(false);
                 validate();
                 repaint();
             }
         });
+    }
+
+    public PanelLateral getPanelLateral() {
+        return panelLateral;
     }
 }

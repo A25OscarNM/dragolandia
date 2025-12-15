@@ -4,7 +4,7 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
-import jakarta.persistence.OneToOne;
+import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
 
 @Entity
@@ -19,7 +19,7 @@ public class Dragon {
     private int intensidadFuego;
     private int resistencia;
 
-    @OneToOne
+    @ManyToOne(targetEntity = Bosque.class)
     private Bosque bosque;
 
     public Dragon() {

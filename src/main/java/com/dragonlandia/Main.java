@@ -5,13 +5,13 @@ public class Main {
     public static void main(String[] args) {
         Controller app = new Controller();
 
-        // Mago
+        // // Mago
         // Mago mago = app.crearMago("a", 10, 5);
-        // //Hechizo
-        // Hechizo hechizo1 = app.crearHechizo("Bola de fuego");
-        // Hechizo hechizo2 = app.crearHechizo("Rayo");
-        // Hechizo hechizo3 = app.crearHechizo("Bola de nieve");
-        // Hechizo hechizo4 = app.crearHechizo("Misil arcano");
+        // Hechizo
+        // app.crearHechizo("Rayo");
+        // app.crearHechizo("Bola de fuego");
+        // app.crearHechizo("Bola de nieve");
+        // app.crearHechizo("Misil arcano");
         // //Conjuro
         // app.crearConjuro(mago, hechizo1);
         // app.crearConjuro(mago, hechizo2);

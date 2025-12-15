@@ -23,7 +23,7 @@ public class PanelBosque extends JPanel {
 
     public PanelBosque() {
 
-        setBounds(0, 0, 900, 500);
+        setBounds(0, 0, 550, 500);
         setLayout(null);
 
         JLabel lblTitle = new JLabel("Agregar bosque");
@@ -79,6 +79,10 @@ public class PanelBosque extends JPanel {
         for (Monstruo m : monstruos) {
             cbMonstruoJefe.addItem(m);
         }
+
+        lblNombre.setFont(new Font("Tahoma", Font.PLAIN, 14));
+        lblNombre.setBounds(21, 81, 150, 24);
+        panel.add(lblNombre);
 
         btnSave = new JButton("Agregar");
         btnSave.setFont(new Font("Tahoma", Font.PLAIN, 14));

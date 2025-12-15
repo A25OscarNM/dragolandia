@@ -27,44 +27,49 @@ public class PanelDragon extends JPanel {
         setLayout(null);
 
         JLabel lblTitle = new JLabel("Agregar dragon");
+        lblTitle.setHorizontalAlignment(JLabel.CENTER);
         lblTitle.setFont(new Font("Tahoma", Font.BOLD, 16));
         lblTitle.setBounds(20, 11, 500, 60);
         add(lblTitle);
 
         JPanel panel = new JPanel();
         panel.setBorder(new EtchedBorder(EtchedBorder.LOWERED, null, null));
-        panel.setBounds(20, 71, 500, 340);
+        panel.setBounds(20, 71, 500, 284);
         panel.setLayout(null);
         add(panel);
 
         JLabel lblNombre = new JLabel("Nombre");
+
         lblNombre.setFont(new Font("Tahoma", Font.PLAIN, 14));
-        lblNombre.setBounds(21, 50, 150, 24);
+        lblNombre.setBounds(21, 57, 150, 24);
         panel.add(lblNombre);
 
         JLabel lblFuego = new JLabel("Intensidad fuego");
+
         lblFuego.setFont(new Font("Tahoma", Font.PLAIN, 14));
-        lblFuego.setBounds(21, 90, 150, 24);
+        lblFuego.setBounds(21, 98, 150, 24);
         panel.add(lblFuego);
 
         JLabel lblResistencia = new JLabel("Resistencia");
+
         lblResistencia.setFont(new Font("Tahoma", Font.PLAIN, 14));
         lblResistencia.setBounds(21, 130, 150, 24);
         panel.add(lblResistencia);
 
         JLabel lblBosque = new JLabel("Bosque");
+
         lblBosque.setFont(new Font("Tahoma", Font.PLAIN, 14));
-        lblBosque.setBounds(21, 170, 150, 24);
+        lblBosque.setBounds(21, 166, 150, 24);
         panel.add(lblBosque);
 
         txtNombre = new JTextField();
         txtNombre.setFont(new Font("Tahoma", Font.PLAIN, 14));
-        txtNombre.setBounds(180, 50, 263, 24);
+        txtNombre.setBounds(180, 57, 263, 24);
         panel.add(txtNombre);
 
         txtIntensidadFuego = new JTextField();
         txtIntensidadFuego.setFont(new Font("Tahoma", Font.PLAIN, 14));
-        txtIntensidadFuego.setBounds(180, 90, 263, 24);
+        txtIntensidadFuego.setBounds(180, 98, 263, 24);
         panel.add(txtIntensidadFuego);
 
         txtResistencia = new JTextField();
@@ -74,7 +79,7 @@ public class PanelDragon extends JPanel {
 
         cbBosque = new JComboBox<>();
         cbBosque.setFont(new Font("Tahoma", Font.PLAIN, 14));
-        cbBosque.setBounds(180, 170, 263, 24);
+        cbBosque.setBounds(180, 166, 263, 24);
         panel.add(cbBosque);
 
         for (Bosque b : bosques) {
@@ -83,7 +88,7 @@ public class PanelDragon extends JPanel {
 
         btnSave = new JButton("Agregar");
         btnSave.setFont(new Font("Tahoma", Font.PLAIN, 14));
-        btnSave.setBounds(200, 260, 100, 23);
+        btnSave.setBounds(200, 230, 100, 23);
         panel.add(btnSave);
     }
 

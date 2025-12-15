@@ -3,6 +3,8 @@ package com.dragonlandia.modelo;
 import java.util.ArrayList;
 import java.util.Random;
 
+import com.dragonlandia.Controller;
+
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -97,35 +99,34 @@ public class Mago {
     public void lanzarHechizo(Monstruo monstruo, int hechizo) {
 
         Random rand = new Random();
+        ArrayList<Monstruo> listaMonstruos = Controller.getMonstruos();
 
         switch (hechizo) {
-            case 1:
+            case 1 -> {
                 System.out.println("Castea bola de fuego");
-                //metodo estatico getMonstruos
-                break;
-            case 2:
+
+                for (Monstruo monstruoSelected : listaMonstruos) {
+                    monstruoSelected.setVida(monstruo.getVida() - this.nivelMagia);
+                }
+            }
+            case 2 -> {
                 System.out.println("Castea rayo");
                 monstruo.setVida(monstruo.getVida() - this.nivelMagia);
-                break;
-            case 3:
+            }
+            case 3 -> {
                 System.out.println("Castea bola de nieve");
                 System.out.println("El monstruo ahora esta congelado!");
-                monstruo.setVida(monstruo.getVida() - this.nivelMagia);
-                break;
-            case 4:
+                monstruo.setVida(0);
+            }
+            case 4 -> {
                 System.out.println("Castea misil arcano");
-
-                //metodo estatico getMonstruos
-                ArrayList<Monstruo> listaMonstruos = new ArrayList<>();
 
                 for (int i = 0; i < 3; i++) {
                     int numero = rand.nextInt(listaMonstruos.size());
                     listaMonstruos.get(numero).setVida(listaMonstruos.get(numero).getVida() - this.nivelMagia);
                 }
-
-                break;
-            default:
-                this.vida -= 1;
+            }
+            default -> this.vida -= 1;
         }
     }
 }
