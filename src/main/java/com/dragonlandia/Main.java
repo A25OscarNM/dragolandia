@@ -4,7 +4,7 @@ public class Main {
 
     public static void main(String[] args) {
         Controller app = new Controller();
-
+        app.showAllMonstruos();
         // // Mago
         // Mago mago = app.crearMago("a", 10, 5);
         // Hechizo

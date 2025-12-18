@@ -17,16 +17,19 @@ import com.dragonlandia.modelo.Mago;
 import com.dragonlandia.modelo.Monstruo;
 import com.dragonlandia.modelo.TipoMonstruo;
 import com.dragonlandia.vista.DragoVista;
+import com.dragonlandia.vista.SessionInstancia;
 
 public class Controller {
 
     // IMPORTANTE
     // HACER SINGLETON CON EL SESSION FACTORY
     private DragoVista vista;
+    private SessionFactory factory;
 
     public Controller() {
         this.vista = new DragoVista(this);
         this.vista.setVisible(true);
+        factory = SessionInstancia.getInstance();
     }
 
     public Mago crearMago(String nombre, int vida, int nivelMagia) {
@@ -220,4 +223,28 @@ public class Controller {
                     monstruo.getFuerza());
         }
     }
+
+    public Monstruo buscarMonstruo(int id) {
+        Session session = null;
+        Monstruo monstruo = null;
+
+        try (SessionFactory factory = (new Configuration()).configure().buildSessionFactory();) {
+
+            session = factory.getCurrentSession();
+            Transaction tx = session.beginTransaction();
+            monstruo = session
+                    .createQuery("SELECT monstruo from Monstruo monstruo WHERE monstruo.id = :id", Monstruo.class)
+                    .setParameter("id", id)
+                    .getSingleResult();
+            tx.commit();
+
+        } catch (HibernateException ex) {
+            ex.printStackTrace();
+        }
+
+        return monstruo;
+    }
+
+    // Obtener los monstruos que no sean jefes ya, obtener todos los monstruos que
+    // no sean parte de un bosque
 }

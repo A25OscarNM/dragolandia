@@ -1,5 +1,6 @@
 package com.dragonlandia.vista;
 
+import java.awt.Component;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
@@ -97,7 +98,12 @@ public class DragoVista extends JFrame {
             int nivelPeligro = Integer.parseInt(panelBosque.txtNivelPeligro.getText());
             Monstruo jefe = (Monstruo) panelBosque.cbMonstruoJefe.getSelectedItem();
             ArrayList<Monstruo> listaMonstruos = new ArrayList<>();
-            listaMonstruos.add(jefe);
+
+            for (int i = 0; i < PanelLateral.table.getRowCount(); i++) {
+                if ((boolean) PanelLateral.table.getModel().getValueAt(i, 5)) {
+                    listaMonstruos.add(app.buscarMonstruo((int) PanelLateral.table.getModel().getValueAt(i, 0)));
+                }
+            }
 
             app.crearBosque(nombre, nivelPeligro, jefe, listaMonstruos);
             panelBosque.limpiarCampos();
@@ -201,5 +207,9 @@ public class DragoVista extends JFrame {
 
     public PanelLateral getPanelLateral() {
         return panelLateral;
+    }
+
+    public void load() {
+        app.showAllMonstruos();
     }
 }

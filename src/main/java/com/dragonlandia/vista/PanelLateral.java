@@ -12,7 +12,7 @@ import javax.swing.table.DefaultTableModel;
 
 public class PanelLateral extends JPanel {
 
-    public JTable table;
+    public static JTable table;
 
     public PanelLateral() {
         setBounds(575, 0, 550, 500);
@@ -33,14 +33,15 @@ public class PanelLateral extends JPanel {
         add(panel);
 
         JScrollPane scrollPane = new JScrollPane();
-        scrollPane.setBounds(0, 0, 450, 250);
+        scrollPane.setBounds(0, 0, 500, 284);
         panel.add(scrollPane);
 
         table = new JTable();
         table.setModel(
-                new DefaultTableModel(new Object[][] {}, new String[] { "ID", "Nombre", "Vida", "Tipo", "Fuerza" }) {
+                new DefaultTableModel(new Object[][] {},
+                        new String[] { "ID", "Nombre", "Vida", "Tipo", "Fuerza", "Agregar" }) {
                     Class[] columnTypes = new Class[] { Integer.class, String.class, Integer.class, String.class,
-                            Integer.class };
+                            Integer.class, Boolean.class };
 
                     @Override
                     public Class getColumnClass(int columnIndex) {
@@ -54,6 +55,6 @@ public class PanelLateral extends JPanel {
 
     public void addMonstruo(int id, String nombre, int vida, int tipo, int fuerza) {
         DefaultTableModel tableModel = (DefaultTableModel) table.getModel();
-        tableModel.addRow(new Object[] { id, nombre, vida, tipo, fuerza });
+        tableModel.addRow(new Object[] { id, nombre, vida, tipo, fuerza, false });
     }
 }
