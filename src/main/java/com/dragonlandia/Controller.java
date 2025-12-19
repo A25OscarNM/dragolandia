@@ -3,12 +3,6 @@ package com.dragonlandia;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.hibernate.HibernateException;
-import org.hibernate.Session;
-import org.hibernate.SessionFactory;
-import org.hibernate.Transaction;
-import org.hibernate.cfg.Configuration;
-
 import com.dragonlandia.modelo.Bosque;
 import com.dragonlandia.modelo.Conjuro;
 import com.dragonlandia.modelo.Dragon;
@@ -17,234 +11,149 @@ import com.dragonlandia.modelo.Mago;
 import com.dragonlandia.modelo.Monstruo;
 import com.dragonlandia.modelo.TipoMonstruo;
 import com.dragonlandia.vista.DragoVista;
-import com.dragonlandia.vista.SessionInstancia;
+import com.dragonlandia.vista.EmFactory;
+
+import jakarta.persistence.EntityManager;
+import jakarta.persistence.EntityTransaction;
+import jakarta.persistence.NoResultException;
 
 public class Controller {
 
-    // IMPORTANTE
-    // HACER SINGLETON CON EL SESSION FACTORY
     private DragoVista vista;
-    private SessionFactory factory;
+    private static EntityManager gestorEntidades;
+    private static EntityTransaction gestorTransaction;
 
     public Controller() {
+        gestorEntidades = EmFactory.getEntityManager();
+        gestorTransaction = gestorEntidades.getTransaction();
+
         this.vista = new DragoVista(this);
         this.vista.setVisible(true);
-        factory = SessionInstancia.getInstance();
     }
 
     public Mago crearMago(String nombre, int vida, int nivelMagia) {
-        Session session = null;
+        gestorTransaction.begin();
+        Mago mago = new Mago(0, nombre, vida, nivelMagia);
+        gestorEntidades.persist(mago);
 
-        Mago mago = null;
-
-        try (SessionFactory factory = (new Configuration()).configure().buildSessionFactory();) {
-
-            session = factory.getCurrentSession();
-            Transaction tx = session.beginTransaction();
-            mago = new Mago(0, nombre, vida, nivelMagia);
-            session.persist(mago);
-            tx.commit();
-
-        } catch (HibernateException ex) {
-            ex.printStackTrace();
-        }
+        gestorTransaction.commit();
         return mago;
     }
 
     public Monstruo crearMonstruo(String nombre, int vida, int tipo) {
-        Session session = null;
 
-        Monstruo monstruo = null;
+        gestorTransaction.begin();
+        Monstruo monstruo = new Monstruo(0, nombre, vida, TipoMonstruo.values()[tipo]);
+        gestorEntidades.persist(monstruo);
 
-        try (SessionFactory factory = (new Configuration()).configure().buildSessionFactory();) {
-
-            session = factory.getCurrentSession();
-            Transaction tx = session.beginTransaction();
-            monstruo = new Monstruo(0, nombre, vida, TipoMonstruo.values()[tipo]);
-            session.persist(monstruo);
-            tx.commit();
-
-        } catch (HibernateException ex) {
-            ex.printStackTrace();
-        }
+        gestorTransaction.commit();
 
         return monstruo;
     }
 
     public Bosque crearBosque(String nombre, int nivelPeligro, Monstruo monstruoJefe, List<Monstruo> listaMonstruos) {
-        Session session = null;
-        Bosque bosque = null;
 
-        try (SessionFactory factory = (new Configuration()).configure().buildSessionFactory();) {
+        gestorTransaction.begin();
+        Bosque bosque = new Bosque(0, nombre, nivelPeligro, monstruoJefe, listaMonstruos);
+        gestorEntidades.persist(bosque);
 
-            session = factory.getCurrentSession();
-            Transaction tx = session.beginTransaction();
-            bosque = new Bosque(0, nombre, nivelPeligro, monstruoJefe, listaMonstruos);
-            session.persist(bosque);
-            tx.commit();
-
-        } catch (HibernateException ex) {
-            ex.printStackTrace();
-        }
+        gestorTransaction.commit();
 
         return bosque;
     }
 
     public void crearDragon(String nombre, int intensidadFuego, int resistencia, Bosque bosque) {
-        Session session = null;
 
-        try (SessionFactory factory = (new Configuration()).configure().buildSessionFactory();) {
+        gestorTransaction.begin();
+        Dragon dragon = new Dragon(0, nombre, intensidadFuego, resistencia, bosque);
+        gestorEntidades.persist(dragon);
 
-            session = factory.getCurrentSession();
-            Transaction tx = session.beginTransaction();
-            Dragon dragon = new Dragon(0, nombre, intensidadFuego, resistencia, bosque);
-            session.persist(dragon);
-            tx.commit();
-
-        } catch (HibernateException ex) {
-            ex.printStackTrace();
-        }
+        gestorTransaction.commit();
     }
 
     public void crearConjuro(Mago mago, Hechizo hechizo) {
-        Session session = null;
 
-        try (SessionFactory factory = (new Configuration()).configure().buildSessionFactory();) {
+        gestorTransaction.begin();
+        Conjuro conjuro = new Conjuro(0, mago, hechizo);
+        gestorEntidades.persist(conjuro);
 
-            session = factory.getCurrentSession();
-            Transaction tx = session.beginTransaction();
-            Conjuro conjuro = new Conjuro(0, mago, hechizo);
-            session.persist(conjuro);
-            tx.commit();
-
-        } catch (HibernateException ex) {
-            ex.printStackTrace();
-        }
+        gestorTransaction.commit();
     }
 
     public Hechizo crearHechizo(String nombre) {
-        Session session = null;
 
-        Hechizo hechizo = null;
+        gestorTransaction.begin();
+        Hechizo hechizo = new Hechizo(0, nombre);
+        gestorEntidades.persist(hechizo);
 
-        try (SessionFactory factory = (new Configuration()).configure().buildSessionFactory();) {
-
-            session = factory.getCurrentSession();
-            Transaction tx = session.beginTransaction();
-            hechizo = new Hechizo(0, nombre);
-            session.persist(hechizo);
-            tx.commit();
-
-        } catch (HibernateException ex) {
-            ex.printStackTrace();
-        }
+        gestorTransaction.commit();
 
         return hechizo;
     }
 
     public static ArrayList<Monstruo> getMonstruos() {
-        Session session = null;
-        ArrayList<Monstruo> listaMonstruos = null;
 
-        try (SessionFactory factory = (new Configuration()).configure().buildSessionFactory();) {
-
-            session = factory.getCurrentSession();
-            Transaction tx = session.beginTransaction();
-            listaMonstruos = (ArrayList<Monstruo>) session.createQuery("from Monstruo", Monstruo.class).list();
-            tx.commit();
-
-        } catch (HibernateException ex) {
-            ex.printStackTrace();
-        }
+        ArrayList<Monstruo> listaMonstruos = (ArrayList<Monstruo>) gestorEntidades
+                .createQuery("from Monstruo", Monstruo.class)
+                .getResultList();
 
         return listaMonstruos;
     }
 
     public static ArrayList<Bosque> getBosques() {
-        Session session = null;
-        ArrayList<Bosque> listaBosques = null;
-
-        try (SessionFactory factory = (new Configuration()).configure().buildSessionFactory();) {
-
-            session = factory.getCurrentSession();
-            Transaction tx = session.beginTransaction();
-            listaBosques = (ArrayList<Bosque>) session.createQuery("from Bosque", Bosque.class).list();
-            tx.commit();
-
-        } catch (HibernateException ex) {
-            ex.printStackTrace();
-        }
+        ArrayList<Bosque> listaBosques = (ArrayList<Bosque>) gestorEntidades.createQuery("from Bosque", Bosque.class)
+                .getResultList();
 
         return listaBosques;
     }
 
     public static ArrayList<Hechizo> getHechizos() {
-        Session session = null;
-        ArrayList<Hechizo> listaHechizos = null;
 
-        try (SessionFactory factory = (new Configuration()).configure().buildSessionFactory();) {
-
-            session = factory.getCurrentSession();
-            Transaction tx = session.beginTransaction();
-            listaHechizos = (ArrayList<Hechizo>) session.createQuery("from Hechizo", Hechizo.class).list();
-            tx.commit();
-
-        } catch (HibernateException ex) {
-            ex.printStackTrace();
-        }
+        ArrayList<Hechizo> listaHechizos = (ArrayList<Hechizo>) gestorEntidades
+                .createQuery("from Hechizo", Hechizo.class).getResultList();
 
         return listaHechizos;
     }
 
     public static ArrayList<Monstruo> getMonstruosPosibles() {
-        Session session = null;
-        ArrayList<Monstruo> listaMonstruos = null;
 
-        try (SessionFactory factory = (new Configuration()).configure().buildSessionFactory();) {
+        ArrayList<Monstruo> monstruos = getMonstruos();
+        ArrayList<Monstruo> monstruosDevolver = new ArrayList<>();
+        Monstruo mon = null;
 
-            session = factory.getCurrentSession();
-            Transaction tx = session.beginTransaction();
-            listaMonstruos = (ArrayList<Monstruo>) session.createQuery("SELECT * from Monstruo ", Monstruo.class)
-                    .list();
-            tx.commit();
-
-        } catch (HibernateException ex) {
-            ex.printStackTrace();
+        for (Monstruo monstruo : monstruos) {
+            try {
+                mon = (Monstruo) gestorEntidades
+                        .createQuery("SELECT a from bosque_monstruo a WHERE a.listaMonstuos.id = :id", Monstruo.class)
+                        .setParameter("id", monstruo.getId())
+                        .getSingleResult();
+            } catch (NoResultException ex) {
+                monstruosDevolver.add(mon);
+            }
         }
 
-        return listaMonstruos;
+        return monstruosDevolver;
     }
 
+    // Manda los monstruos a la vista
     public void showAllMonstruos() {
-        ArrayList<Monstruo> monstruos = getMonstruos();
-        for (Monstruo monstruo : monstruos) {
-            vista.getPanelLateral().addMonstruo(monstruo.getId(), monstruo.getNombre(), monstruo.getVida(),
-                    monstruo.getTipo().ordinal(),
-                    monstruo.getFuerza());
+
+        ArrayList<Monstruo> monstruos = getMonstruosPosibles();
+        if (!monstruos.isEmpty()) {
+            for (Monstruo monstruo : monstruos) {
+                vista.getPanelLateral().addMonstruo(monstruo.getId(), monstruo.getNombre(), monstruo.getVida(),
+                        monstruo.getTipo().ordinal(),
+                        monstruo.getFuerza());
+            }
         }
     }
 
     public Monstruo buscarMonstruo(int id) {
-        Session session = null;
-        Monstruo monstruo = null;
 
-        try (SessionFactory factory = (new Configuration()).configure().buildSessionFactory();) {
-
-            session = factory.getCurrentSession();
-            Transaction tx = session.beginTransaction();
-            monstruo = session
-                    .createQuery("SELECT monstruo from Monstruo monstruo WHERE monstruo.id = :id", Monstruo.class)
-                    .setParameter("id", id)
-                    .getSingleResult();
-            tx.commit();
-
-        } catch (HibernateException ex) {
-            ex.printStackTrace();
-        }
-
+        Monstruo monstruo = gestorEntidades
+                .createQuery("SELECT monstruo from Monstruo monstruo WHERE monstruo.id = :id", Monstruo.class)
+                .setParameter("id", id)
+                .getSingleResult();
         return monstruo;
     }
-
-    // Obtener los monstruos que no sean jefes ya, obtener todos los monstruos que
-    // no sean parte de un bosque
 }
