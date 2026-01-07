@@ -57,4 +57,10 @@ public class PanelLateral extends JPanel {
         DefaultTableModel tableModel = (DefaultTableModel) table.getModel();
         tableModel.addRow(new Object[] { id, nombre, vida, tipo, fuerza, false });
     }
+
+
+    public void resetTable() {
+        DefaultTableModel tableModel = (DefaultTableModel) table.getModel();
+        tableModel.setRowCount(0);
+    }
 }

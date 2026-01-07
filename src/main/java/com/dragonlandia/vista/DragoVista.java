@@ -1,6 +1,5 @@
 package com.dragonlandia.vista;
 
-import java.awt.Component;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
@@ -21,14 +20,15 @@ import com.dragonlandia.modelo.Monstruo;
 public class DragoVista extends JFrame {
 
     JMenuBar menuBar;
-    JMenu menu1, menu2;
-    JMenuItem menu3, menu4, menu5, menu6;
+    JMenu menu1;
+    JMenuItem menu2, menu3, menu4, menu5, menu6;
     private PanelMago panelMago;
     private PanelMonstruo panelMonstruo;
     private PanelBosque panelBosque;
     private PanelDragon panelDragon;
     private PanelLateral panelLateral;
-    private Controller app;
+    private PanelCombate panelCombate;
+    public Controller app;
 
     public DragoVista(Controller app) {
         this.app = app;
@@ -44,12 +44,35 @@ public class DragoVista extends JFrame {
         panelBosque = new PanelBosque();
         panelDragon = new PanelDragon();
         panelLateral = new PanelLateral();
+        panelCombate = new PanelCombate();
+
+        // Dentro del constructor de DragoVista, después de crear los paneles
+// Botón de Bola de Fuego
+        panelCombate.btnBolaFuego.addActionListener(e -> {
+            app.ejecutarTurno("Bola de fuego");
+        });
+
+// Botón de Rayo
+        panelCombate.btnRayo.addActionListener(e -> {
+            app.ejecutarTurno("Rayo");
+        });
+
+// Botón de Bola de Nieve (El que congela según el trabajo)
+        panelCombate.btnBolaNieve.addActionListener(e -> {
+            app.ejecutarTurno("Bola de nieve");
+        });
+
+// El cuarto botón (puedes llamarlo Curación o Rayo de Hielo según lo que crearas)
+        panelCombate.btnCuracion.addActionListener(e -> {
+            app.ejecutarTurno("Misil arcano");
+        });
 
         add(panelMago);
         add(panelMonstruo);
         add(panelBosque);
         add(panelDragon);
         add(panelLateral);
+        add(panelCombate);
 
         // Mostrar solo Mago por defecto
         panelMago.setVisible(true);
@@ -59,6 +82,7 @@ public class DragoVista extends JFrame {
         panelDragon.setVisible(false);
         panelDragon.recargarBosques(app.getBosques());
         panelLateral.setVisible(false);
+        panelCombate.setVisible(false);
 
         panelMago.btnSave.addActionListener(e -> {
             String nombre = panelMago.txtNombre.getText();
@@ -107,6 +131,8 @@ public class DragoVista extends JFrame {
 
             app.crearBosque(nombre, nivelPeligro, jefe, listaMonstruos);
             panelBosque.limpiarCampos();
+            panelLateral.resetTable();
+            app.showAllMonstruos();
             panelDragon.recargarBosques(app.getBosques());
         });
 
@@ -139,7 +165,7 @@ public class DragoVista extends JFrame {
          * método add
          */
         menu1 = new JMenu("Crear");
-        menu2 = new JMenu("Jugar");
+        menu2 = new JMenuItem("Jugar");
         menuBar.add(menu1);
         menuBar.add(menu2);
 
@@ -163,6 +189,7 @@ public class DragoVista extends JFrame {
                 panelBosque.setVisible(false);
                 panelDragon.setVisible(false);
                 panelLateral.setVisible(false);
+                panelCombate.setVisible(false);
                 validate();
                 repaint();
             }
@@ -175,6 +202,7 @@ public class DragoVista extends JFrame {
                 panelBosque.setVisible(false);
                 panelDragon.setVisible(false);
                 panelLateral.setVisible(false);
+                panelCombate.setVisible(false);
                 validate();
                 repaint();
             }
@@ -187,6 +215,10 @@ public class DragoVista extends JFrame {
                 panelBosque.setVisible(true);
                 panelDragon.setVisible(false);
                 panelLateral.setVisible(true);
+                panelCombate.setVisible(false);
+
+                panelLateral.resetTable();
+                app.showAllMonstruos();
                 validate();
                 repaint();
             }
@@ -199,6 +231,31 @@ public class DragoVista extends JFrame {
                 panelBosque.setVisible(false);
                 panelDragon.setVisible(true);
                 panelLateral.setVisible(false);
+                panelCombate.setVisible(false);
+
+                validate();
+                repaint();
+            }
+        });
+
+        menu2.addActionListener(e -> {
+            // Selectores (Select de la base de datos)
+            Mago mSel = (Mago) JOptionPane.showInputDialog(this, "Selecciona tu Mago", "Partida",
+                    JOptionPane.QUESTION_MESSAGE, null, app.getMagos().toArray(), null);
+
+            Bosque bSel = (Bosque) JOptionPane.showInputDialog(this, "Selecciona el Bosque", "Partida",
+                    JOptionPane.QUESTION_MESSAGE, null, app.getBosques().toArray(), null);
+
+            if (mSel != null && bSel != null) {
+                // Ocultamos paneles de gestión y mostramos combate
+                panelMago.setVisible(false);
+                panelMonstruo.setVisible(false);
+                panelBosque.setVisible(false);
+                panelDragon.setVisible(false);
+                panelLateral.setVisible(false);
+
+                panelCombate.setVisible(true);
+                app.prepararCombate(mSel, bSel);
                 validate();
                 repaint();
             }
@@ -209,7 +266,12 @@ public class DragoVista extends JFrame {
         return panelLateral;
     }
 
+    public PanelCombate getPanelCombate() {
+        return panelCombate;
+    }
+
     public void load() {
         app.showAllMonstruos();
     }
+
 }

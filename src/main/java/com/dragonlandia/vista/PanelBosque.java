@@ -102,5 +102,6 @@ public class PanelBosque extends JPanel {
         txtNombre.setText("");
         txtNivelPeligro.setText("");
         cbMonstruoJefe.setSelectedIndex(0);
+        PanelLateral.table.clearSelection();
     }
 }
