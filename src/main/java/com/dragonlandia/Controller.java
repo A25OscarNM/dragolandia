@@ -94,7 +94,15 @@ public class Controller {
     }
 
     public static ArrayList<Mago> getMagos() {
-        return new ArrayList<>(gestorEntidades.createQuery("SELECT m FROM Mago m", Mago.class).getResultList());
+        ArrayList<Mago> listaMagos = (ArrayList<Mago>) gestorEntidades.createQuery("from Mago", Mago.class)
+                .getResultList();
+        return listaMagos;
+    }
+
+    public static ArrayList<Bosque> getBosques() {
+        ArrayList<Bosque> listaBosques = (ArrayList<Bosque>) gestorEntidades.createQuery("from Bosque", Bosque.class)
+                .getResultList();
+        return listaBosques;
     }
 
     public static ArrayList<Monstruo> getMonstruos() {
@@ -104,13 +112,6 @@ public class Controller {
                 .getResultList();
 
         return listaMonstruos;
-    }
-
-    public static ArrayList<Bosque> getBosques() {
-        ArrayList<Bosque> listaBosques = (ArrayList<Bosque>) gestorEntidades.createQuery("from Bosque", Bosque.class)
-                .getResultList();
-
-        return listaBosques;
     }
 
     public static ArrayList<Hechizo> getHechizos() {
@@ -152,12 +153,11 @@ public class Controller {
         return monstruo;
     }
 
-    //pruebas
+    // pruebas
     public void prepararCombate(Mago m, Bosque b) {
         this.magoCombate = m;
         this.jefeCombate = b.getMonstruoJefe();
 
-        // Actualizamos la interfaz con los nombres y vidas iniciales
         vista.getPanelCombate().lblMago.setText("Mago: " + m.getNombre());
         vista.getPanelCombate().lblMonstruo.setText("Jefe: " + jefeCombate.getNombre());
         actualizarLabelsVida();
@@ -169,51 +169,37 @@ public class Controller {
             return;
         }
 
-        // Buscamos el hechizo que el usuario quiere lanzar dentro de los que el mago conoce
-        // Esta consulta verifica la relación Mago-Hechizo (tu tabla de conjuros)
         Hechizo hechizoElegido = null;
         try {
-            // Buscamos en la tabla 'Conjuro' donde el mago coincida y el nombre del hechizo también
             hechizoElegido = gestorEntidades.createQuery(
-                    "SELECT c.hechizo FROM Conjuro c WHERE c.mago.id = :magoId AND c.hechizo.nombre = :nombreH",
+                    "SELECT c.hechizo FROM Conjuro c WHERE c.mago.id = :magoId AND c.hechizo.nombre = :nombre",
                     Hechizo.class)
                     .setParameter("magoId", magoCombate.getId())
-                    .setParameter("nombreH", nombreHechizo)
+                    .setParameter("nombre", nombreHechizo)
                     .getSingleResult();
         } catch (NoResultException e) {
-            hechizoElegido = null; // El mago no tiene ese conjuro asignado
+            hechizoElegido = null;
         }
 
         StringBuilder log = new StringBuilder();
 
         if (hechizoElegido != null) {
-            // EL MAGO LANZA EL HECHIZO
-            int dañoBase = magoCombate.getNivelMagia();
+            ArrayList<String> logHechizos = magoCombate.lanzarHechizo(jefeCombate, hechizoElegido.getId());
 
-            // Lógica según el tipo de hechizo (Requisitos del trabajo)
-            if (nombreHechizo.toLowerCase().contains("nieve")) {
-                jefeCombate.setVida(0);
-                log.append("¡BOLA DE NIEVE! El jefe ha quedado congelado y derrotado.\n");
-            } else {
-                // Se le resta puntos de vida en función del nivel de magia + efecto del hechizo
-                int dañoTotal = dañoBase + magoCombate.getNivelMagia();
-                jefeCombate.setVida(Math.max(0, jefeCombate.getVida() - dañoTotal));
-                log.append("Lanzas ").append(nombreHechizo)
-                        .append(" causando ").append(dañoTotal).append(" de daño.\n");
+            for (String logHechizo : logHechizos) {
+                log.append(logHechizo);
             }
+
         } else {
-            // PENALIZACIÓN: Si el hechizo no es de sus conjuros, se le resta 1 al mago
             magoCombate.setVida(magoCombate.getVida() - 1);
             log.append("Intentas lanzar ").append(nombreHechizo)
                     .append(" pero no lo conoces. ¡Te debilitas! (-1 vida)\n");
         }
 
-        // CONTRAATAQUE DEL JEFE
         if (jefeCombate.getVida() > 0) {
-            int vidaAnterior = magoCombate.getVida();
-            jefeCombate.atacar(magoCombate); // Este método usa la fuerza del monstruo
+            jefeCombate.atacar(magoCombate);
             log.append("El jefe ").append(jefeCombate.getNombre())
-                    .append(" ataca. Pierdes ").append(vidaAnterior - magoCombate.getVida()).append(" de vida.\n");
+                    .append(" ataca. Pierdes ").append(jefeCombate.getFuerza()).append(" de vida.\n");
         } else {
             log.append("--- ¡VICTORIA! El jefe ha caído ---\n");
         }
@@ -227,19 +213,10 @@ public class Controller {
     }
 
     private void actualizarInterfazCombate(String mensajeLog) {
-        // 1. Actualizamos los números de vida en los JLabels
-        // Usamos Math.max(0, ...) para que no muestre vida negativa si muere
         vista.getPanelCombate().lblVidaMago.setText("Vida: " + Math.max(0, magoCombate.getVida()));
         vista.getPanelCombate().lblVidaMonstruo.setText("Vida: " + Math.max(0, jefeCombate.getVida()));
-
-        // 2. Añadimos el texto de lo que ha pasado al JTextArea
-        // .append() añade el texto al final de lo que ya había
         vista.getPanelCombate().logCombate.append(mensajeLog + "\n");
-
-        // 3. (Opcional) Hacer scroll automático hacia abajo para ver el último mensaje
         vista.getPanelCombate().logCombate.setCaretPosition(
-                vista.getPanelCombate().logCombate.getDocument().getLength()
-        );
+                vista.getPanelCombate().logCombate.getDocument().getLength());
     }
-
 }

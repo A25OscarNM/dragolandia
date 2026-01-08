@@ -96,37 +96,51 @@ public class Mago {
         monstruo.setVida(monstruo.getVida() - this.nivelMagia);
     }
 
-    public void lanzarHechizo(Monstruo monstruo, int hechizo) {
+    public ArrayList<String> lanzarHechizo(Monstruo monstruo, int hechizo) {
 
         Random rand = new Random();
         ArrayList<Monstruo> listaMonstruos = Controller.getMonstruos();
 
+        ArrayList<String> logs = new ArrayList<>();
+        String log = "";
+
         switch (hechizo) {
             case 1 -> {
-                System.out.println("Castea bola de fuego");
+                monstruo.setVida(monstruo.getVida() - this.nivelMagia);
 
-                for (Monstruo monstruoSelected : listaMonstruos) {
-                    monstruoSelected.setVida(monstruo.getVida() - this.nivelMagia);
-                }
+                log = "El mago " + nombre + " ataca al monstruo " + monstruo.getNombre() + " causando " + nivelMagia
+                        + " de daño.\n";
+                logs.add(log);
             }
             case 2 -> {
-                System.out.println("Castea rayo");
-                monstruo.setVida(monstruo.getVida() - this.nivelMagia);
+                for (Monstruo monstruoSelected : listaMonstruos) {
+                    monstruoSelected.setVida(monstruo.getVida() - (nivelMagia / 2));
+                }
+                log = "El mago " + nombre + " ataca a todos los monstruos causando " + (nivelMagia / 2) + " de daño.\n";
+                logs.add(log);
             }
+
             case 3 -> {
-                System.out.println("Castea bola de nieve");
-                System.out.println("El monstruo ahora esta congelado!");
                 monstruo.setVida(0);
+
+                log = "El mago " + nombre + " ataca al monstruo " + monstruo.getNombre() + " causando (inf) de daño.\n";
+                logs.add(log);
             }
             case 4 -> {
-                System.out.println("Castea misil arcano");
-
                 for (int i = 0; i < 3; i++) {
                     int numero = rand.nextInt(listaMonstruos.size());
-                    listaMonstruos.get(numero).setVida(listaMonstruos.get(numero).getVida() - this.nivelMagia);
+                    listaMonstruos.get(numero).setVida(listaMonstruos.get(numero).getVida() - (nivelMagia / 3));
+
+                    log = "El mago " + nombre + " ataca al monstruo " + listaMonstruos.get(numero).getNombre()
+                            + " causando "
+                            + (nivelMagia / 3)
+                            + " de daño.\n";
+                    logs.add(log);
                 }
             }
             default -> this.vida -= 1;
         }
+
+        return logs;
     }
 }

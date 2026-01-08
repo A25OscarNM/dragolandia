@@ -8,7 +8,7 @@ import javax.swing.JTextArea;
 
 public class PanelCombate extends JPanel {
     public JLabel lblMago, lblMonstruo, lblVidaMago, lblVidaMonstruo;
-    public JButton btnBolaFuego, btnRayo, btnBolaNieve, btnCuracion; // 4 Hechizos
+    public JButton btnBolaFuego, btnRayo, btnBolaNieve, btnMisil;
     public JTextArea logCombate;
 
     public PanelCombate() {
@@ -44,9 +44,9 @@ public class PanelCombate extends JPanel {
         btnBolaNieve.setBounds(370, 350, 150, 40);
         add(btnBolaNieve);
 
-        btnCuracion = new JButton("Curación");
-        btnCuracion.setBounds(530, 350, 150, 40);
-        add(btnCuracion);
+        btnMisil = new JButton("Misil Arcano");
+        btnMisil.setBounds(530, 350, 150, 40);
+        add(btnMisil);
 
         logCombate = new JTextArea();
         logCombate.setEditable(false);
