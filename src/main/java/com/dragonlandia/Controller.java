@@ -165,6 +165,9 @@ public class Controller {
     }
 
     public void ejecutarTurno(String nombreHechizo) {
+
+        ArrayList<Monstruo> congelados = new ArrayList<>();
+
         if (magoCombate.getVida() <= 0 || jefeCombate.getVida() <= 0) {
             return;
         }
@@ -184,10 +187,17 @@ public class Controller {
         StringBuilder log = new StringBuilder();
 
         if (hechizoElegido != null) {
-            ArrayList<String> logHechizos = magoCombate.lanzarHechizo(jefeCombate, hechizoElegido.getId());
 
-            for (String logHechizo : logHechizos) {
-                log.append(logHechizo);
+            if (hechizoElegido.getNombre() == "Bola de nieve") {
+                congelados.add(jefeCombate);
+                log.append("El mago " + magoCombate.getNombre() + " ataca al monstruo congelandolo.\n");
+
+            } else {
+                ArrayList<String> logHechizos = magoCombate.lanzarHechizo(jefeCombate, hechizoElegido.getId());
+
+                for (String logHechizo : logHechizos) {
+                    log.append(logHechizo);
+                }
             }
 
         } else {
@@ -197,9 +207,15 @@ public class Controller {
         }
 
         if (jefeCombate.getVida() > 0) {
-            jefeCombate.atacar(magoCombate);
-            log.append("El jefe ").append(jefeCombate.getNombre())
-                    .append(" ataca. Pierdes ").append(jefeCombate.getFuerza()).append(" de vida.\n");
+
+            if (congelados.contains(jefeCombate)) {
+                log.append("El jefe esta congelado y no podra atacar.\n");
+                congelados.remove(jefeCombate);
+            } else {
+                jefeCombate.atacar(magoCombate);
+                log.append("El jefe ").append(jefeCombate.getNombre())
+                        .append(" ataca. Pierdes ").append(jefeCombate.getFuerza()).append(" de vida.\n");
+            }
         } else {
             log.append("--- ¡VICTORIA! El jefe ha caído ---\n");
         }
