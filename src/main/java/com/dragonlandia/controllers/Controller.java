@@ -1,15 +1,12 @@
-package com.dragonlandia;
+package com.dragonlandia.controllers;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import com.dragonlandia.modelo.Bosque;
-import com.dragonlandia.modelo.Conjuro;
-import com.dragonlandia.modelo.Dragon;
 import com.dragonlandia.modelo.Hechizo;
 import com.dragonlandia.modelo.Mago;
 import com.dragonlandia.modelo.Monstruo;
-import com.dragonlandia.modelo.TipoMonstruo;
 import com.dragonlandia.vista.DragoVista;
 import com.dragonlandia.vista.EmFactory;
 
@@ -25,110 +22,52 @@ public class Controller {
     private Mago magoCombate;
     private Monstruo jefeCombate;
 
+    private static ControllerMago controllerMago;
+    private static ControllerMonstruo controllerMonstruo;
+    private static ControllerBosque controllerBosque;
+    private static ControllerHechizo controllerHechizo;
+    private static ControllerDragon controllerDragon;
+    private static ControllerConjuro controllerConjuro;
+
     public Controller() {
         gestorEntidades = EmFactory.getEntityManager();
         gestorTransaction = gestorEntidades.getTransaction();
+
+        controllerMago = new ControllerMago();
+        controllerMonstruo = new ControllerMonstruo();
+        controllerBosque = new ControllerBosque();
+        controllerHechizo = new ControllerHechizo();
+        controllerDragon = new ControllerDragon();
+        controllerConjuro = new ControllerConjuro();
 
         this.vista = new DragoVista(this);
         this.vista.setVisible(true);
     }
 
+    // MAGO
     public Mago crearMago(String nombre, int vida, int nivelMagia) {
-        gestorTransaction.begin();
-        Mago mago = new Mago(0, nombre, vida, nivelMagia);
-        gestorEntidades.persist(mago);
-
-        gestorTransaction.commit();
-        return mago;
-    }
-
-    public Monstruo crearMonstruo(String nombre, int vida, int tipo) {
-
-        gestorTransaction.begin();
-        Monstruo monstruo = new Monstruo(0, nombre, vida, TipoMonstruo.values()[tipo]);
-        gestorEntidades.persist(monstruo);
-
-        gestorTransaction.commit();
-
-        return monstruo;
-    }
-
-    public Bosque crearBosque(String nombre, int nivelPeligro, Monstruo monstruoJefe, List<Monstruo> listaMonstruos) {
-
-        gestorTransaction.begin();
-        Bosque bosque = new Bosque(0, nombre, nivelPeligro, monstruoJefe, listaMonstruos);
-        gestorEntidades.persist(bosque);
-
-        gestorTransaction.commit();
-
-        return bosque;
-    }
-
-    public void crearDragon(String nombre, int intensidadFuego, int resistencia, Bosque bosque) {
-
-        gestorTransaction.begin();
-        Dragon dragon = new Dragon(0, nombre, intensidadFuego, resistencia, bosque);
-        gestorEntidades.persist(dragon);
-
-        gestorTransaction.commit();
-    }
-
-    public void crearConjuro(Mago mago, Hechizo hechizo) {
-
-        gestorTransaction.begin();
-        Conjuro conjuro = new Conjuro(0, mago, hechizo);
-        gestorEntidades.persist(conjuro);
-
-        gestorTransaction.commit();
-    }
-
-    public Hechizo crearHechizo(String nombre) {
-
-        gestorTransaction.begin();
-        Hechizo hechizo = new Hechizo(0, nombre);
-        gestorEntidades.persist(hechizo);
-
-        gestorTransaction.commit();
-
-        return hechizo;
+        return controllerMago.crearMago(nombre, vida, nivelMagia);
     }
 
     public static ArrayList<Mago> getMagos() {
-        ArrayList<Mago> listaMagos = (ArrayList<Mago>) gestorEntidades.createQuery("from Mago", Mago.class)
-                .getResultList();
-        return listaMagos;
+        return controllerMago.getMagos();
     }
 
-    public static ArrayList<Bosque> getBosques() {
-        ArrayList<Bosque> listaBosques = (ArrayList<Bosque>) gestorEntidades.createQuery("from Bosque", Bosque.class)
-                .getResultList();
-        return listaBosques;
+    // MONSTRUO
+    public Monstruo crearMonstruo(String nombre, int vida, int tipo) {
+        return controllerMonstruo.crearMonstruo(nombre, vida, tipo);
     }
 
     public static ArrayList<Monstruo> getMonstruos() {
-
-        ArrayList<Monstruo> listaMonstruos = (ArrayList<Monstruo>) gestorEntidades
-                .createQuery("from Monstruo", Monstruo.class)
-                .getResultList();
-
-        return listaMonstruos;
-    }
-
-    public static ArrayList<Hechizo> getHechizos() {
-
-        ArrayList<Hechizo> listaHechizos = (ArrayList<Hechizo>) gestorEntidades
-                .createQuery("from Hechizo", Hechizo.class).getResultList();
-
-        return listaHechizos;
+        return controllerMonstruo.getMonstruos();
     }
 
     public static ArrayList<Monstruo> getMonstruosPosibles() {
-        String jpql = "SELECT m FROM Monstruo m WHERE m.id NOT IN "
-                + "(SELECT lm.id FROM Bosque b JOIN b.listaMonstruos lm)";
+        return controllerMonstruo.getMonstruosPosibles();
+    }
 
-        List<Monstruo> resultado = gestorEntidades.createQuery(jpql, Monstruo.class).getResultList();
-
-        return new ArrayList<>(resultado);
+    public Monstruo buscarMonstruo(int id) {
+        return controllerMonstruo.buscarMonstruo(id);
     }
 
     // Manda los monstruos a la vista
@@ -144,19 +83,37 @@ public class Controller {
         }
     }
 
-    public Monstruo buscarMonstruo(int id) {
+    // BOSQUE
+    public Bosque crearBosque(String nombre, int nivelPeligro, Monstruo monstruoJefe, List<Monstruo> listaMonstruos) {
+        return controllerBosque.crearBosque(nombre, nivelPeligro, monstruoJefe, listaMonstruos);
+    }
 
-        Monstruo monstruo = gestorEntidades
-                .createQuery("SELECT monstruo from Monstruo monstruo WHERE monstruo.id = :id", Monstruo.class)
-                .setParameter("id", id)
-                .getSingleResult();
-        return monstruo;
+    public static ArrayList<Bosque> getBosques() {
+        return controllerBosque.getBosques();
+    }
+
+    // HECHIZO
+
+    public Hechizo crearHechizo(String nombre) {
+        return controllerHechizo.crearHechizo(nombre);
+    }
+
+    public ArrayList<Hechizo> getHechizos() {
+        return controllerHechizo.getHechizos();
+    }
+
+    public void crearDragon(String nombre, int intensidadFuego, int resistencia, Bosque bosque) {
+        controllerDragon.crearDragon(nombre, intensidadFuego, resistencia, bosque);
+    }
+
+    public void crearConjuro(Mago mago, Hechizo hechizo) {
+        controllerConjuro.crearConjuro(mago, hechizo);
     }
 
     // pruebas
     public void prepararCombate(Mago m, Bosque b) {
         this.magoCombate = m;
-        this.jefeCombate = b.getMonstruoJefe();
+        this.jefeCombate = b.mostrarJefe();
 
         vista.getPanelCombate().lblMago.setText("Mago: " + m.getNombre());
         vista.getPanelCombate().lblMonstruo.setText("Jefe: " + jefeCombate.getNombre());
@@ -187,11 +144,9 @@ public class Controller {
         StringBuilder log = new StringBuilder();
 
         if (hechizoElegido != null) {
-
-            if (hechizoElegido.getNombre() == "Bola de nieve") {
+            if (hechizoElegido.getNombre().equals("Bola de nieve")) {
                 congelados.add(jefeCombate);
                 log.append("El mago " + magoCombate.getNombre() + " ataca al monstruo congelandolo.\n");
-
             } else {
                 ArrayList<String> logHechizos = magoCombate.lanzarHechizo(jefeCombate, hechizoElegido.getId());
 

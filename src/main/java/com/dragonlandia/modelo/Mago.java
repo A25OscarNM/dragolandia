@@ -3,7 +3,7 @@ package com.dragonlandia.modelo;
 import java.util.ArrayList;
 import java.util.Random;
 
-import com.dragonlandia.Controller;
+import com.dragonlandia.controllers.Controller;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -89,6 +89,11 @@ public class Mago {
         this.nivelMagia = nivelMagia;
     }
 
+    @Override
+    public String toString() {
+        return nombre;
+    }
+
     /**
      * @param monstruo
      */
@@ -117,13 +122,6 @@ public class Mago {
                     monstruoSelected.setVida(monstruo.getVida() - (nivelMagia / 2));
                 }
                 log = "El mago " + nombre + " ataca a todos los monstruos causando " + (nivelMagia / 2) + " de daño.\n";
-                logs.add(log);
-            }
-
-            case 3 -> {
-                monstruo.setVida(0);
-
-                log = "El mago " + nombre + " ataca al monstruo " + monstruo.getNombre() + " causando (inf) de daño.\n";
                 logs.add(log);
             }
             case 4 -> {

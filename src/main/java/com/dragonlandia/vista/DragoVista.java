@@ -11,7 +11,7 @@ import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
 import javax.swing.JOptionPane;
 
-import com.dragonlandia.Controller;
+import com.dragonlandia.controllers.Controller;
 import com.dragonlandia.modelo.Bosque;
 import com.dragonlandia.modelo.Hechizo;
 import com.dragonlandia.modelo.Mago;

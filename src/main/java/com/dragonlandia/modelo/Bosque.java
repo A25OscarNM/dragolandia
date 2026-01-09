@@ -84,13 +84,6 @@ public class Bosque {
         this.monstruoJefe = monstruoJefe;
     }
 
-    /**
-     * @return Monstruo
-     */
-    public Monstruo getMonstruoJefe() {
-        return this.monstruoJefe;
-    }
-
     public List<Monstruo> getListaMonstruos() {
         return listaMonstruos;
     }
