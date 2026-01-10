@@ -1,9 +1,8 @@
 package com.dragonlandia.modelo;
 
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Random;
-
-import com.dragonlandia.controllers.Controller;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -101,35 +100,52 @@ public class Mago {
         monstruo.setVida(monstruo.getVida() - this.nivelMagia);
     }
 
-    public ArrayList<String> lanzarHechizo(Monstruo monstruo, int hechizo) {
+    
+    /** 
+     * @param monstruo
+     * @param nombreHechizo
+     * @return ArrayList<String>
+     */
+    public ArrayList<String> lanzarHechizo(List<Monstruo> monstruos, String nombreHechizo) {
 
         Random rand = new Random();
-        ArrayList<Monstruo> listaMonstruos = Controller.getMonstruos();
 
         ArrayList<String> logs = new ArrayList<>();
         String log = "";
 
-        switch (hechizo) {
-            case 1 -> {
-                monstruo.setVida(monstruo.getVida() - this.nivelMagia);
-
-                log = "El mago " + nombre + " ataca al monstruo " + monstruo.getNombre() + " causando " + nivelMagia
-                        + " de daño.\n";
-                logs.add(log);
-            }
-            case 2 -> {
-                for (Monstruo monstruoSelected : listaMonstruos) {
-                    monstruoSelected.setVida(monstruo.getVida() - (nivelMagia / 2));
+        switch (nombreHechizo) {
+            case "Bola de fuego" -> {
+                for (Monstruo monstruoSelected : monstruos) {
+                    monstruoSelected.setVida(monstruoSelected.getVida() - (nivelMagia / 2));
                 }
                 log = "El mago " + nombre + " ataca a todos los monstruos causando " + (nivelMagia / 2) + " de daño.\n";
                 logs.add(log);
             }
-            case 4 -> {
-                for (int i = 0; i < 3; i++) {
-                    int numero = rand.nextInt(listaMonstruos.size());
-                    listaMonstruos.get(numero).setVida(listaMonstruos.get(numero).getVida() - (nivelMagia / 3));
+            case "Rayo" -> {
+                int selected = rand.nextInt(monstruos.size());
 
-                    log = "El mago " + nombre + " ataca al monstruo " + listaMonstruos.get(numero).getNombre()
+                monstruos.get(selected).setVida(monstruos.get(selected).getVida() - this.nivelMagia);
+
+                log = "El mago " + nombre + " ataca al monstruo " + monstruos.get(selected).getNombre() + " causando " + nivelMagia
+                        + " de daño.\n";
+                logs.add(log);
+            }
+            case "Bola de nieve" -> {
+                int selected = rand.nextInt(monstruos.size());
+
+                monstruos.get(selected).setVida(0);
+
+                log = "El mago " + nombre + " ataca al monstruo " + monstruos.get(selected).getNombre() + " causando "
+                        + (nivelMagia * 2)
+                        + " de daño.\n";
+                logs.add(log);
+            }
+            case "Misil arcano" -> {
+                for (int i = 0; i < 3; i++) {
+                    int numero = rand.nextInt(monstruos.size());
+                    monstruos.get(numero).setVida(monstruos.get(numero).getVida() - (nivelMagia / 3));
+
+                    log = "El mago " + nombre + " ataca al monstruo " + monstruos.get(numero).getNombre()
                             + " causando "
                             + (nivelMagia / 3)
                             + " de daño.\n";

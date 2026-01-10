@@ -60,5 +60,17 @@ public class ControllerMonstruo {
     }
 
     // UPDATE
+    public void modificarMonstruo(Monstruo monstruo) {
+        gestorTransaction.begin();
+        gestorEntidades.merge(monstruo);
+        gestorTransaction.commit();
+    }
+
     // DELETE
+    public void eliminarMonstruo(int id) {
+        gestorTransaction.begin();
+        Monstruo m = gestorEntidades.find(Monstruo.class, id);
+        if (m != null) gestorEntidades.remove(m);
+        gestorTransaction.commit();
+    }
 }

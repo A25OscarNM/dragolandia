@@ -38,5 +38,17 @@ public class ControllerHechizo {
     }
 
     // UPDATE
+    public void modificarHechizo(Hechizo hechizoModificado) {
+        gestorTransaction.begin();
+        gestorEntidades.merge(hechizoModificado);
+        gestorTransaction.commit();
+    }
+
     // DELETE
+    public void eliminarHechizo(int id) {
+        gestorTransaction.begin();
+        Hechizo hechizo = gestorEntidades.find(Hechizo.class, id);
+        if (hechizo != null) gestorEntidades.remove(hechizo);
+        gestorTransaction.commit();
+    }
 }

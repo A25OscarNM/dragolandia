@@ -36,5 +36,17 @@ public class ControllerMago {
     }
 
     // UPDATE
+    public void modificarMago(Mago magoModificado) {
+        gestorTransaction.begin();
+        gestorEntidades.merge(magoModificado);
+        gestorTransaction.commit();
+    }
+
     // DELETE
+    public void eliminarMago(int id) {
+        gestorTransaction.begin();
+        Mago mago = gestorEntidades.find(Mago.class, id);
+        if (mago != null) gestorEntidades.remove(mago);
+        gestorTransaction.commit();
+    }
 }

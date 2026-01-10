@@ -26,7 +26,32 @@ public class ControllerDragon {
     }
 
     // SELECT
+    public Dragon getDragon(int id) {
+        return gestorEntidades.find(Dragon.class, id);
+    }
+
+    public Dragon getDragonPorIdBosque(int idBosque) {
+    return gestorEntidades
+        .createQuery(
+            "SELECT d FROM Dragon d WHERE d.bosque.id = :idBosque",
+            Dragon.class
+        )
+        .setParameter("idBosque", idBosque)
+        .getSingleResult();
+}
 
     // UPDATE
+    public void modificarDragon(Dragon dragon) {
+        gestorTransaction.begin();
+        gestorEntidades.merge(dragon);
+        gestorTransaction.commit();
+    }
+
     // DELETE
+    public void eliminarDragon(int id) {
+        gestorTransaction.begin();
+        Dragon dragon = gestorEntidades.find(Dragon.class, id);
+        if (dragon != null) gestorEntidades.remove(dragon);
+        gestorTransaction.commit();
+    }
 }

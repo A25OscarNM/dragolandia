@@ -7,7 +7,7 @@ import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
 
 public class PanelCombate extends JPanel {
-    public JLabel lblMago, lblMonstruo, lblVidaMago, lblVidaMonstruo;
+    public JLabel lblMago;
     public JButton btnBolaFuego, btnRayo, btnBolaNieve, btnMisil;
     public JTextArea logCombate;
 
@@ -16,20 +16,8 @@ public class PanelCombate extends JPanel {
         setLayout(null);
 
         lblMago = new JLabel("Mago: -");
-        lblMago.setBounds(50, 20, 200, 30);
+        lblMago.setBounds(50, 10, 200, 30);
         add(lblMago);
-
-        lblVidaMago = new JLabel("Vida: 0");
-        lblVidaMago.setBounds(50, 50, 200, 30);
-        add(lblVidaMago);
-
-        lblMonstruo = new JLabel("Jefe: -");
-        lblMonstruo.setBounds(800, 20, 200, 30);
-        add(lblMonstruo);
-
-        lblVidaMonstruo = new JLabel("Vida: 0");
-        lblVidaMonstruo.setBounds(800, 50, 200, 30);
-        add(lblVidaMonstruo);
 
         // Botones de hechizos
         btnBolaFuego = new JButton("Bola de Fuego");
@@ -51,7 +39,7 @@ public class PanelCombate extends JPanel {
         logCombate = new JTextArea();
         logCombate.setEditable(false);
         JScrollPane scroll = new JScrollPane(logCombate);
-        scroll.setBounds(50, 100, 1050, 230);
+        scroll.setBounds(50, 50, 1050, 260);
         add(scroll);
     }
 }

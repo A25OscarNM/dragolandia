@@ -166,16 +166,13 @@ public class DragoVista extends JFrame {
 
         menu2.addActionListener(e -> {
 
-            Mago magoSelect = (Mago) JOptionPane.showInputDialog(this, "Selecciona tu Mago", "Partida",
-                    JOptionPane.QUESTION_MESSAGE, null, app.getMagos().toArray(), null);
-
             Bosque bosqueSelect = (Bosque) JOptionPane.showInputDialog(this, "Selecciona el Bosque", "Partida",
                     JOptionPane.QUESTION_MESSAGE, null, app.getBosques().toArray(), null);
 
-            if (magoSelect != null && bosqueSelect != null) {
+            if (bosqueSelect != null) {
                 cambioVista();
                 panelCombate.setVisible(true);
-                app.prepararCombate(magoSelect, bosqueSelect);
+                app.prepararCombate(bosqueSelect);
                 validate();
                 repaint();
             }

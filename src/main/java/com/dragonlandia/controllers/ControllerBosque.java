@@ -40,14 +40,17 @@ public class ControllerBosque {
     // UPDATE
     public void modificarBosque(Bosque bosqueModificar) {
         gestorTransaction.begin();
-        Bosque bosque = gestorEntidades.find(Bosque.class, bosqueModificar.getId());
-
-        bosque.setNombre(bosqueModificar.getNombre());
-        bosque.setNivelPeligro(bosqueModificar.getNivelPeligro());
-        bosque.setMonstruoJefe(bosqueModificar.mostrarJefe());
-        bosque.setListaMonstruos(bosqueModificar.getListaMonstruos());
-
+        gestorEntidades.merge(bosqueModificar);
         gestorTransaction.commit();
     }
+
     // DELETE
+    public void eliminarBosque(int id) {
+        gestorTransaction.begin();
+        Bosque bosque = gestorEntidades.find(Bosque.class, id);
+        if (bosque != null) {
+            gestorEntidades.remove(bosque);
+        }
+        gestorTransaction.commit();
+    }
 }
