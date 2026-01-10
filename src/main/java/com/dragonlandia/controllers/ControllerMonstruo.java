@@ -19,6 +19,12 @@ public class ControllerMonstruo {
         gestorTransaction = gestorEntidades.getTransaction();
     }
 
+    /** 
+     * @param nombre
+     * @param vida
+     * @param tipo
+     * @return Monstruo
+     */
     // CREATE
     public Monstruo crearMonstruo(String nombre, int vida, int tipo) {
         gestorTransaction.begin();
@@ -30,6 +36,9 @@ public class ControllerMonstruo {
         return monstruo;
     }
 
+    /** 
+     * @return ArrayList<Monstruo>
+     */
     // SELECT
     public ArrayList<Monstruo> getMonstruos() {
         ArrayList<Monstruo> listaMonstruos = (ArrayList<Monstruo>) gestorEntidades
@@ -39,6 +48,9 @@ public class ControllerMonstruo {
         return listaMonstruos;
     }
 
+    /** 
+     * @return ArrayList<Monstruo>
+     */
     // Monstruos que no esten en otro bosque
     public ArrayList<Monstruo> getMonstruosPosibles() {
         String jpql = "SELECT m FROM Monstruo m WHERE m.id NOT IN "
@@ -49,6 +61,10 @@ public class ControllerMonstruo {
         return new ArrayList<>(resultado);
     }
 
+    /** 
+     * @param id
+     * @return Monstruo
+     */
     // Buscar por id
     public Monstruo buscarMonstruo(int id) {
 
@@ -59,6 +75,9 @@ public class ControllerMonstruo {
         return monstruo;
     }
 
+    /** 
+     * @param monstruo
+     */
     // UPDATE
     public void modificarMonstruo(Monstruo monstruo) {
         gestorTransaction.begin();
@@ -66,6 +85,9 @@ public class ControllerMonstruo {
         gestorTransaction.commit();
     }
 
+    /** 
+     * @param id
+     */
     // DELETE
     public void eliminarMonstruo(int id) {
         gestorTransaction.begin();

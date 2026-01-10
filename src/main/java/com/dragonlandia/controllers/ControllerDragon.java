@@ -17,6 +17,12 @@ public class ControllerDragon {
     }
 
     // CREATE
+    /** 
+     * @param nombre
+     * @param intensidadFuego
+     * @param resistencia
+     * @param bosque
+     */
     public void crearDragon(String nombre, int intensidadFuego, int resistencia, Bosque bosque) {
         gestorTransaction.begin();
         Dragon dragon = new Dragon(0, nombre, intensidadFuego, resistencia, bosque);
@@ -26,10 +32,18 @@ public class ControllerDragon {
     }
 
     // SELECT
+    /** 
+     * @param id
+     * @return Dragon
+     */
     public Dragon getDragon(int id) {
         return gestorEntidades.find(Dragon.class, id);
     }
 
+    /** 
+     * @param idBosque
+     * @return Dragon
+     */
     public Dragon getDragonPorIdBosque(int idBosque) {
     return gestorEntidades
         .createQuery(
@@ -41,6 +55,9 @@ public class ControllerDragon {
 }
 
     // UPDATE
+    /** 
+     * @param dragon
+     */
     public void modificarDragon(Dragon dragon) {
         gestorTransaction.begin();
         gestorEntidades.merge(dragon);
@@ -48,6 +65,9 @@ public class ControllerDragon {
     }
 
     // DELETE
+    /** 
+     * @param id
+     */
     public void eliminarDragon(int id) {
         gestorTransaction.begin();
         Dragon dragon = gestorEntidades.find(Dragon.class, id);

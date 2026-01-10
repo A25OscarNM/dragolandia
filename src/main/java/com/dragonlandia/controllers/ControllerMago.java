@@ -18,6 +18,12 @@ public class ControllerMago {
         gestorTransaction = gestorEntidades.getTransaction();
     }
 
+    /** 
+     * @param nombre
+     * @param vida
+     * @param nivelMagia
+     * @return Mago
+     */
     // CREATE
     public Mago crearMago(String nombre, int vida, int nivelMagia) {
         gestorTransaction.begin();
@@ -28,6 +34,9 @@ public class ControllerMago {
         return mago;
     }
 
+    /** 
+     * @return ArrayList<Mago>
+     */
     // SELECT
     public static ArrayList<Mago> getMagos() {
         ArrayList<Mago> listaMagos = (ArrayList<Mago>) gestorEntidades.createQuery("from Mago", Mago.class)
@@ -35,6 +44,9 @@ public class ControllerMago {
         return listaMagos;
     }
 
+    /** 
+     * @param magoModificado
+     */
     // UPDATE
     public void modificarMago(Mago magoModificado) {
         gestorTransaction.begin();
@@ -42,6 +54,9 @@ public class ControllerMago {
         gestorTransaction.commit();
     }
 
+    /** 
+     * @param id
+     */
     // DELETE
     public void eliminarMago(int id) {
         gestorTransaction.begin();

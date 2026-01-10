@@ -18,6 +18,10 @@ public class ControllerHechizo {
     }
 
     // CREATE
+    /** 
+     * @param nombre
+     * @return Hechizo
+     */
     public Hechizo crearHechizo(String nombre) {
 
         gestorTransaction.begin();
@@ -30,6 +34,9 @@ public class ControllerHechizo {
     }
 
     // SELECT
+    /** 
+     * @return ArrayList<Hechizo>
+     */
     public ArrayList<Hechizo> getHechizos() {
         ArrayList<Hechizo> listaHechizos = (ArrayList<Hechizo>) gestorEntidades
                 .createQuery("from Hechizo", Hechizo.class).getResultList();
@@ -38,6 +45,9 @@ public class ControllerHechizo {
     }
 
     // UPDATE
+    /** 
+     * @param hechizoModificado
+     */
     public void modificarHechizo(Hechizo hechizoModificado) {
         gestorTransaction.begin();
         gestorEntidades.merge(hechizoModificado);
@@ -45,6 +55,9 @@ public class ControllerHechizo {
     }
 
     // DELETE
+    /** 
+     * @param id
+     */
     public void eliminarHechizo(int id) {
         gestorTransaction.begin();
         Hechizo hechizo = gestorEntidades.find(Hechizo.class, id);

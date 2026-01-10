@@ -19,6 +19,10 @@ public class ControllerConjuro {
         gestorTransaction = gestorEntidades.getTransaction();
     }
 
+    /** 
+     * @param mago
+     * @param hechizo
+     */
     // CREATE
     public void crearConjuro(Mago mago, Hechizo hechizo) {
         gestorTransaction.begin();
@@ -28,11 +32,19 @@ public class ControllerConjuro {
         gestorTransaction.commit();
     }
 
+    /** 
+     * @param id
+     * @return Conjuro
+     */
     // SELECT
     public Conjuro getConjuro(int id) {
         return gestorEntidades.find(Conjuro.class, id);
     }
     
+    /** 
+     * @param idMago
+     * @return List<Hechizo>
+     */
     public List<Hechizo> getHechizosPorMago(int idMago) {
         return gestorEntidades.createQuery(
             "SELECT c.hechizo FROM Conjuro c WHERE c.mago.id = :idMago", Hechizo.class)
@@ -40,12 +52,18 @@ public class ControllerConjuro {
             .getResultList();
     }
 
+    /** 
+     * @param conjuro
+     */
     // UPDATE
     public void modificarConjuro(Conjuro conjuro) {
         gestorTransaction.begin();
         gestorEntidades.merge(conjuro);
         gestorTransaction.commit();
     }
+    /** 
+     * @param id
+     */
     // DELETE
     public void eliminarConjuro(int id) {
         gestorTransaction.begin();
@@ -54,6 +72,9 @@ public class ControllerConjuro {
         gestorTransaction.commit();
     }
 
+    /** 
+     * @param idMago
+     */
     public void borrarConjurosPorMago(int idMago) {
         gestorTransaction.begin();
         gestorEntidades.createQuery("DELETE FROM Conjuro c WHERE c.mago.id = :idMago")

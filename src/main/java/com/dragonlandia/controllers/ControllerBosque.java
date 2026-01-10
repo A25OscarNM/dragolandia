@@ -19,6 +19,13 @@ public class ControllerBosque {
         gestorTransaction = gestorEntidades.getTransaction();
     }
 
+    /** 
+     * @param nombre
+     * @param nivelPeligro
+     * @param monstruoJefe
+     * @param listaMonstruos
+     * @return Bosque
+     */
     // CREATE
     public Bosque crearBosque(String nombre, int nivelPeligro, Monstruo monstruoJefe, List<Monstruo> listaMonstruos) {
         gestorTransaction.begin();
@@ -30,6 +37,9 @@ public class ControllerBosque {
         return bosque;
     }
 
+    /** 
+     * @return ArrayList<Bosque>
+     */
     // SELECT
     public ArrayList<Bosque> getBosques() {
         ArrayList<Bosque> listaBosques = (ArrayList<Bosque>) gestorEntidades.createQuery("from Bosque", Bosque.class)
@@ -37,6 +47,9 @@ public class ControllerBosque {
         return listaBosques;
     }
 
+    /** 
+     * @param bosqueModificar
+     */
     // UPDATE
     public void modificarBosque(Bosque bosqueModificar) {
         gestorTransaction.begin();
@@ -44,6 +57,9 @@ public class ControllerBosque {
         gestorTransaction.commit();
     }
 
+    /** 
+     * @param id
+     */
     // DELETE
     public void eliminarBosque(int id) {
         gestorTransaction.begin();

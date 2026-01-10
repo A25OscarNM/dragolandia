@@ -90,6 +90,9 @@ public class PanelBosque extends JPanel {
         panel.add(btnSave);
     }
 
+    /** 
+     * @param monstruos
+     */
     public void recargarMonstruos(ArrayList<Monstruo> monstruos) {
         cbMonstruoJefe.removeAllItems();
 

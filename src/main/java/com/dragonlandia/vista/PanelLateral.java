@@ -53,6 +53,13 @@ public class PanelLateral extends JPanel {
         scrollPane.setViewportView(table);
     }
 
+    /** 
+     * @param id
+     * @param nombre
+     * @param vida
+     * @param tipo
+     * @param fuerza
+     */
     public void addMonstruo(int id, String nombre, int vida, int tipo, int fuerza) {
         DefaultTableModel tableModel = (DefaultTableModel) table.getModel();
         tableModel.addRow(new Object[] { id, nombre, vida, tipo, fuerza, false });

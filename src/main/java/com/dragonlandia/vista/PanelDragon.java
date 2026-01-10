@@ -92,6 +92,9 @@ public class PanelDragon extends JPanel {
         panel.add(btnSave);
     }
 
+    /** 
+     * @param bosques
+     */
     public void recargarBosques(ArrayList<Bosque> bosques) {
         cbBosque.removeAllItems();
 

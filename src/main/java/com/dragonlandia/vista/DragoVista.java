@@ -145,6 +145,9 @@ public class DragoVista extends JFrame {
         crearMenu();
     }
 
+    /** 
+     * @param msg
+     */
     public void showMessage(String msg) {
         JOptionPane.showMessageDialog(this, msg);
     }
@@ -227,10 +230,16 @@ public class DragoVista extends JFrame {
         });
     }
 
+    /** 
+     * @return PanelLateral
+     */
     public PanelLateral getPanelLateral() {
         return panelLateral;
     }
 
+    /** 
+     * @return PanelCombate
+     */
     public PanelCombate getPanelCombate() {
         return panelCombate;
     }
