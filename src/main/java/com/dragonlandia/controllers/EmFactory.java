@@ -1,4 +1,4 @@
-package com.dragonlandia.vista;
+package com.dragonlandia.controllers;
 
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.EntityManagerFactory;
@@ -9,7 +9,7 @@ public class EmFactory {
     private static final EntityManagerFactory xestorEntidades = Persistence
             .createEntityManagerFactory("dragolandiaServizo");
 
-    /** 
+    /**
      * @return EntityManager
      */
     public static EntityManager getEntityManager() {

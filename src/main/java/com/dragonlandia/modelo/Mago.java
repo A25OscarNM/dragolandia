@@ -4,6 +4,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
+import com.dragonlandia.controllers.ControllerMonstruo;
+
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -100,8 +102,7 @@ public class Mago {
         monstruo.setVida(monstruo.getVida() - this.nivelMagia);
     }
 
-    
-    /** 
+    /**
      * @param monstruo
      * @param nombreHechizo
      * @return ArrayList<String>
@@ -110,6 +111,7 @@ public class Mago {
 
         Random rand = new Random();
 
+        ControllerMonstruo controller = new ControllerMonstruo();
         ArrayList<String> logs = new ArrayList<>();
         String log = "";
 
@@ -117,6 +119,7 @@ public class Mago {
             case "Bola de fuego" -> {
                 for (Monstruo monstruoSelected : monstruos) {
                     monstruoSelected.setVida(monstruoSelected.getVida() - (nivelMagia / 2));
+                    controller.modificarMonstruo(monstruoSelected);
                 }
                 log = "El mago " + nombre + " ataca a todos los monstruos causando " + (nivelMagia / 2) + " de daño.\n";
                 logs.add(log);
@@ -125,8 +128,9 @@ public class Mago {
                 int selected = rand.nextInt(monstruos.size());
 
                 monstruos.get(selected).setVida(monstruos.get(selected).getVida() - this.nivelMagia);
-
-                log = "El mago " + nombre + " ataca al monstruo " + monstruos.get(selected).getNombre() + " causando " + nivelMagia
+                controller.modificarMonstruo(monstruos.get(selected));
+                log = "El mago " + nombre + " ataca al monstruo " + monstruos.get(selected).getNombre() + " causando "
+                        + nivelMagia
                         + " de daño.\n";
                 logs.add(log);
             }
@@ -134,6 +138,7 @@ public class Mago {
                 int selected = rand.nextInt(monstruos.size());
 
                 monstruos.get(selected).setVida(0);
+                controller.modificarMonstruo(monstruos.get(selected));
 
                 log = "El mago " + nombre + " ataca al monstruo " + monstruos.get(selected).getNombre() + " causando "
                         + (nivelMagia * 2)
@@ -144,7 +149,7 @@ public class Mago {
                 for (int i = 0; i < 3; i++) {
                     int numero = rand.nextInt(monstruos.size());
                     monstruos.get(numero).setVida(monstruos.get(numero).getVida() - (nivelMagia / 3));
-
+                    controller.modificarMonstruo(monstruos.get(numero));
                     log = "El mago " + nombre + " ataca al monstruo " + monstruos.get(numero).getNombre()
                             + " causando "
                             + (nivelMagia / 3)

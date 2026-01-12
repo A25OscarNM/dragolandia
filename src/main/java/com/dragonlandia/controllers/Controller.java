@@ -11,18 +11,10 @@ import com.dragonlandia.modelo.Hechizo;
 import com.dragonlandia.modelo.Mago;
 import com.dragonlandia.modelo.Monstruo;
 import com.dragonlandia.vista.DragoVista;
-import com.dragonlandia.vista.EmFactory;
-
-import jakarta.persistence.EntityManager;
-import jakarta.persistence.EntityTransaction;
 
 public class Controller {
 
     private DragoVista vista;
-    private static EntityManager gestorEntidades;
-    private static EntityTransaction gestorTransaction;
-    private Mago magoCombate;
-    private Monstruo jefeCombate;
 
     private static ControllerMago controllerMago;
     private static ControllerMonstruo controllerMonstruo;
@@ -32,9 +24,6 @@ public class Controller {
     private static ControllerConjuro controllerConjuro;
 
     public Controller() {
-        gestorEntidades = EmFactory.getEntityManager();
-        gestorTransaction = gestorEntidades.getTransaction();
-
         controllerMago = new ControllerMago();
         controllerMonstruo = new ControllerMonstruo();
         controllerBosque = new ControllerBosque();
@@ -47,7 +36,7 @@ public class Controller {
     }
 
     // MAGO
-    /** 
+    /**
      * @param nombre
      * @param vida
      * @param nivelMagia
@@ -57,21 +46,21 @@ public class Controller {
         return controllerMago.crearMago(nombre, vida, nivelMagia);
     }
 
-    /** 
+    /**
      * @return ArrayList<Mago>
      */
     public static ArrayList<Mago> getMagos() {
         return controllerMago.getMagos();
     }
 
-    /** 
+    /**
      * @param mago
      */
     public void modificarMago(Mago mago) {
         controllerMago.modificarMago(mago);
     }
 
-    /** 
+    /**
      * @param id
      */
     public void eliminarMago(int id) {
@@ -79,7 +68,7 @@ public class Controller {
     }
 
     // MONSTRUO
-    /** 
+    /**
      * @param nombre
      * @param vida
      * @param tipo
@@ -89,21 +78,21 @@ public class Controller {
         return controllerMonstruo.crearMonstruo(nombre, vida, tipo);
     }
 
-    /** 
+    /**
      * @return ArrayList<Monstruo>
      */
     public static ArrayList<Monstruo> getMonstruos() {
         return controllerMonstruo.getMonstruos();
     }
 
-    /** 
+    /**
      * @return ArrayList<Monstruo>
      */
     public static ArrayList<Monstruo> getMonstruosPosibles() {
         return controllerMonstruo.getMonstruosPosibles();
     }
 
-    /** 
+    /**
      * @param id
      * @return Monstruo
      */
@@ -111,14 +100,14 @@ public class Controller {
         return controllerMonstruo.buscarMonstruo(id);
     }
 
-    /** 
+    /**
      * @param monstruo
      */
     public void modificarMonstruo(Monstruo monstruo) {
         controllerMonstruo.modificarMonstruo(monstruo);
     }
 
-    /** 
+    /**
      * @param id
      */
     public void eliminarMonstruo(int id) {
@@ -132,14 +121,14 @@ public class Controller {
         if (!monstruos.isEmpty()) {
             for (Monstruo monstruo : monstruos) {
                 vista.getPanelLateral().addMonstruo(monstruo.getId(), monstruo.getNombre(), monstruo.getVida(),
-                        monstruo.getTipo().ordinal(),
+                        monstruo.getTipo().toString(),
                         monstruo.getFuerza());
             }
         }
     }
 
     // BOSQUE
-    /** 
+    /**
      * @param nombre
      * @param nivelPeligro
      * @param monstruoJefe
@@ -150,21 +139,21 @@ public class Controller {
         return controllerBosque.crearBosque(nombre, nivelPeligro, monstruoJefe, listaMonstruos);
     }
 
-    /** 
+    /**
      * @return ArrayList<Bosque>
      */
     public static ArrayList<Bosque> getBosques() {
         return controllerBosque.getBosques();
     }
 
-    /** 
+    /**
      * @param bosque
      */
     public void modificarBosque(Bosque bosque) {
         controllerBosque.modificarBosque(bosque);
     }
 
-    /** 
+    /**
      * @param id
      */
     public void eliminarBosque(int id) {
@@ -172,7 +161,7 @@ public class Controller {
     }
 
     // DRAGÓN
-    /** 
+    /**
      * @param nombre
      * @param intensidadFuego
      * @param resistencia
@@ -182,7 +171,7 @@ public class Controller {
         controllerDragon.crearDragon(nombre, intensidadFuego, resistencia, bosque);
     }
 
-    /** 
+    /**
      * @param id
      * @return Dragon
      */
@@ -190,14 +179,14 @@ public class Controller {
         return controllerDragon.getDragon(id);
     }
 
-    /** 
+    /**
      * @param dragon
      */
     public void modificarDragon(Dragon dragon) {
         controllerDragon.modificarDragon(dragon);
     }
 
-    /** 
+    /**
      * @param id
      */
     public void eliminarDragon(int id) {
@@ -205,7 +194,7 @@ public class Controller {
     }
 
     // HECHIZO
-    /** 
+    /**
      * @param nombre
      * @return Hechizo
      */
@@ -213,21 +202,21 @@ public class Controller {
         return controllerHechizo.crearHechizo(nombre);
     }
 
-    /** 
+    /**
      * @return ArrayList<Hechizo>
      */
     public ArrayList<Hechizo> getHechizos() {
         return controllerHechizo.getHechizos();
     }
 
-    /** 
+    /**
      * @param hechizo
      */
     public void modificarHechizo(Hechizo hechizo) {
         controllerHechizo.modificarHechizo(hechizo);
     }
 
-    /** 
+    /**
      * @param id
      */
     public void eliminarHechizo(int id) {
@@ -235,7 +224,7 @@ public class Controller {
     }
 
     // CONJURO
-    /** 
+    /**
      * @param mago
      * @param hechizo
      */
@@ -243,7 +232,7 @@ public class Controller {
         controllerConjuro.crearConjuro(mago, hechizo);
     }
 
-    /** 
+    /**
      * @param id
      * @return Conjuro
      */
@@ -251,7 +240,7 @@ public class Controller {
         return controllerConjuro.getConjuro(id);
     }
 
-    /** 
+    /**
      * @param idMago
      * @return List<Hechizo>
      */
@@ -259,20 +248,21 @@ public class Controller {
         return controllerConjuro.getHechizosPorMago(idMago);
     }
 
-    /** 
+    /**
      * @param conjuro
      */
     public void modificarConjuro(Conjuro conjuro) {
         controllerConjuro.modificarConjuro(conjuro);
     }
 
-    /** 
+    /**
      * @param id
      */
     public void eliminarConjuro(int id) {
         controllerConjuro.eliminarConjuro(id);
     }
-    /** 
+
+    /**
      * @param idMago
      */
     public void borrarConjurosPorMago(int idMago) {
@@ -286,7 +276,7 @@ public class Controller {
     private StringBuilder logAcumulado = new StringBuilder();
     private Random random = new Random();
 
-    /** 
+    /**
      * @param b
      */
     public void prepararCombate(Bosque b) {
@@ -306,59 +296,60 @@ public class Controller {
         actualizarInterfazCombate("");
     }
 
-    /** 
+    /**
      * @param nombreHechizo
      */
     public void ejecutarTurno(String nombreHechizo) {
 
-        if (magosEnCombate.isEmpty() || monstruosEnCombate.isEmpty()) {
-            return;
-        }
+        if (!magosEnCombate.isEmpty() && !monstruosEnCombate.isEmpty()) {
+            Mago magoQueAtaca = magosEnCombate.get(indiceMagoActual);
 
-        Mago magoQueAtaca = magosEnCombate.get(indiceMagoActual);
+            List<Hechizo> conocidos = getHechizosPorMago(magoQueAtaca.getId());
 
-        List<Hechizo> conocidos = getHechizosPorMago(magoQueAtaca.getId());
+            Hechizo hechizoEncontrado = null;
+            for (Hechizo h : conocidos) {
+                if (h.getNombre().equals(nombreHechizo)) {
+                    hechizoEncontrado = h;
+                }
+            }
 
-        Hechizo hechizoEncontrado = null;
-        for (Hechizo h : conocidos) {
-            if (h.getNombre().equals(nombreHechizo)) {
-                hechizoEncontrado = h;
+            if (hechizoEncontrado != null) {
+                List<String> logsHechizo = magoQueAtaca.lanzarHechizo(monstruosEnCombate,
+                        hechizoEncontrado.getNombre());
+
+                for (String log : logsHechizo) {
+                    logAcumulado.append(log);
+                }
+
+            } else {
+                magoQueAtaca.setVida(magoQueAtaca.getVida() - 1);
+                logAcumulado.append(magoQueAtaca.getNombre()).append(" no conoce ").append(nombreHechizo)
+                        .append(" (-1 vida).\n");
+            }
+
+            // Comprobamos si el mago ha muerto por la penalización
+            if (magoQueAtaca.getVida() <= 0) {
+                logAcumulado.append(magoQueAtaca.getNombre()).append(" murió.\n");
+                magosEnCombate.remove(magoQueAtaca);
+            } else {
+                indiceMagoActual++;
+            }
+
+            actualizarMuertos();
+
+            // Gestión de fin de ronda
+            if (indiceMagoActual >= magosEnCombate.size() || magosEnCombate.isEmpty()) {
+                ejecutarFaseEnemigos();
+                actualizarInterfazCombate(logAcumulado.toString());
+                logAcumulado = new StringBuilder("--- NUEVA RONDA ---\n");
+                indiceMagoActual = 0;
+            }
+
+            if (!magosEnCombate.isEmpty()) {
+                mostrarTurnoActual();
             }
         }
 
-        if (hechizoEncontrado != null) {
-            List<String> logsHechizo = magoQueAtaca.lanzarHechizo(monstruosEnCombate, hechizoEncontrado.getNombre());
-
-            for (String log : logsHechizo) {
-                logAcumulado.append(log);
-            }
-
-        } else {
-            magoQueAtaca.setVida(magoQueAtaca.getVida() - 1);
-            logAcumulado.append(magoQueAtaca.getNombre()).append(" no conoce ").append(nombreHechizo).append(" (-1 vida).\n");
-        }
-
-        // Comprobamos si el mago ha muerto por la penalización
-        if (magoQueAtaca.getVida() <= 0) {
-            logAcumulado.append(magoQueAtaca.getNombre()).append(" murió.\n");
-            magosEnCombate.remove(magoQueAtaca);
-        } else {
-            indiceMagoActual++;
-        }
-
-        actualizarMuertos();
-
-        // Gestión de fin de ronda
-        if (indiceMagoActual >= magosEnCombate.size() || magosEnCombate.isEmpty()) {
-            ejecutarFaseEnemigos();
-            actualizarInterfazCombate(logAcumulado.toString());
-            logAcumulado = new StringBuilder("--- NUEVA RONDA ---\n");
-            indiceMagoActual = 0;
-        }
-
-        if (!magosEnCombate.isEmpty()) {
-            mostrarTurnoActual();
-        }
     }
 
     private void ejecutarFaseEnemigos() {
@@ -370,6 +361,7 @@ public class Controller {
             if (!magosEnCombate.isEmpty()) {
                 Mago victima = magosEnCombate.get(random.nextInt(magosEnCombate.size()));
                 m.atacar(victima);
+                modificarMago(victima);
                 logAcumulado.append(m.getNombre()).append(" ataca a ").append(victima.getNombre()).append(".\n");
 
                 actualizarMuertos();
@@ -384,12 +376,14 @@ public class Controller {
 
         if (d != null && jefe != null && jefe.getVida() > 0) {
             jefe.setVida(jefe.getVida() - d.getIntensidadFuego());
-            logAcumulado.append("Dragón ").append(d.getNombre()).append(" quema al jefe haciendo ").append(d.getIntensidadFuego()).append(" de daño.\n");
+            modificarMonstruo(jefe);
+            logAcumulado.append("Dragón ").append(d.getNombre()).append(" quema al jefe haciendo ")
+                    .append(d.getIntensidadFuego()).append(" de daño.\n");
             actualizarMuertos();
         }
     }
 
-    /** 
+    /**
      * @param log
      */
     private void actualizarInterfazCombate(String log) {
@@ -420,7 +414,8 @@ public class Controller {
     private void mostrarTurnoActual() {
         if (!magosEnCombate.isEmpty()) {
             Mago actual = magosEnCombate.get(indiceMagoActual);
-            vista.getPanelCombate().lblMago.setText("Turno de: " + actual.getNombre() + " (" + (indiceMagoActual + 1) + "/" + magosEnCombate.size() + ")");
+            vista.getPanelCombate().lblMago.setText("Turno de: " + actual.getNombre() + " (" + (indiceMagoActual + 1)
+                    + "/" + magosEnCombate.size() + ")");
         }
     }
 
@@ -451,7 +446,6 @@ public class Controller {
             if (m.getVida() <= 0) {
                 logAcumulado.append("Monstruo ").append(m.getNombre()).append(" murió.\n");
 
-                
                 bosqueActual.getListaMonstruos().remove(m);
                 modificarBosque(bosqueActual);
 
@@ -459,6 +453,5 @@ public class Controller {
                 monstruosEnCombate.remove(m);
             }
         }
-
     }
 }

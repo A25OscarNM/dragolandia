@@ -5,7 +5,6 @@ import java.util.List;
 
 import com.dragonlandia.modelo.Monstruo;
 import com.dragonlandia.modelo.TipoMonstruo;
-import com.dragonlandia.vista.EmFactory;
 
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.EntityTransaction;
@@ -19,7 +18,7 @@ public class ControllerMonstruo {
         gestorTransaction = gestorEntidades.getTransaction();
     }
 
-    /** 
+    /**
      * @param nombre
      * @param vida
      * @param tipo
@@ -36,7 +35,7 @@ public class ControllerMonstruo {
         return monstruo;
     }
 
-    /** 
+    /**
      * @return ArrayList<Monstruo>
      */
     // SELECT
@@ -48,7 +47,7 @@ public class ControllerMonstruo {
         return listaMonstruos;
     }
 
-    /** 
+    /**
      * @return ArrayList<Monstruo>
      */
     // Monstruos que no esten en otro bosque
@@ -61,7 +60,7 @@ public class ControllerMonstruo {
         return new ArrayList<>(resultado);
     }
 
-    /** 
+    /**
      * @param id
      * @return Monstruo
      */
@@ -75,7 +74,7 @@ public class ControllerMonstruo {
         return monstruo;
     }
 
-    /** 
+    /**
      * @param monstruo
      */
     // UPDATE
@@ -85,14 +84,15 @@ public class ControllerMonstruo {
         gestorTransaction.commit();
     }
 
-    /** 
+    /**
      * @param id
      */
     // DELETE
     public void eliminarMonstruo(int id) {
         gestorTransaction.begin();
         Monstruo m = gestorEntidades.find(Monstruo.class, id);
-        if (m != null) gestorEntidades.remove(m);
+        if (m != null)
+            gestorEntidades.remove(m);
         gestorTransaction.commit();
     }
 }

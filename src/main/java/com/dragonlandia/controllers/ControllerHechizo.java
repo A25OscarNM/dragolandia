@@ -3,7 +3,6 @@ package com.dragonlandia.controllers;
 import java.util.ArrayList;
 
 import com.dragonlandia.modelo.Hechizo;
-import com.dragonlandia.vista.EmFactory;
 
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.EntityTransaction;
@@ -18,7 +17,7 @@ public class ControllerHechizo {
     }
 
     // CREATE
-    /** 
+    /**
      * @param nombre
      * @return Hechizo
      */
@@ -34,7 +33,7 @@ public class ControllerHechizo {
     }
 
     // SELECT
-    /** 
+    /**
      * @return ArrayList<Hechizo>
      */
     public ArrayList<Hechizo> getHechizos() {
@@ -45,7 +44,7 @@ public class ControllerHechizo {
     }
 
     // UPDATE
-    /** 
+    /**
      * @param hechizoModificado
      */
     public void modificarHechizo(Hechizo hechizoModificado) {
@@ -55,13 +54,14 @@ public class ControllerHechizo {
     }
 
     // DELETE
-    /** 
+    /**
      * @param id
      */
     public void eliminarHechizo(int id) {
         gestorTransaction.begin();
         Hechizo hechizo = gestorEntidades.find(Hechizo.class, id);
-        if (hechizo != null) gestorEntidades.remove(hechizo);
+        if (hechizo != null)
+            gestorEntidades.remove(hechizo);
         gestorTransaction.commit();
     }
 }

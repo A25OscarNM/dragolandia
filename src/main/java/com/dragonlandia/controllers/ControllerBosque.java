@@ -5,7 +5,6 @@ import java.util.List;
 
 import com.dragonlandia.modelo.Bosque;
 import com.dragonlandia.modelo.Monstruo;
-import com.dragonlandia.vista.EmFactory;
 
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.EntityTransaction;
@@ -19,7 +18,7 @@ public class ControllerBosque {
         gestorTransaction = gestorEntidades.getTransaction();
     }
 
-    /** 
+    /**
      * @param nombre
      * @param nivelPeligro
      * @param monstruoJefe
@@ -37,7 +36,7 @@ public class ControllerBosque {
         return bosque;
     }
 
-    /** 
+    /**
      * @return ArrayList<Bosque>
      */
     // SELECT
@@ -47,7 +46,7 @@ public class ControllerBosque {
         return listaBosques;
     }
 
-    /** 
+    /**
      * @param bosqueModificar
      */
     // UPDATE
@@ -57,7 +56,7 @@ public class ControllerBosque {
         gestorTransaction.commit();
     }
 
-    /** 
+    /**
      * @param id
      */
     // DELETE

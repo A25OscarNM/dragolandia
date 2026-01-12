@@ -3,7 +3,6 @@ package com.dragonlandia.controllers;
 import java.util.ArrayList;
 
 import com.dragonlandia.modelo.Mago;
-import com.dragonlandia.vista.EmFactory;
 
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.EntityTransaction;
@@ -18,7 +17,7 @@ public class ControllerMago {
         gestorTransaction = gestorEntidades.getTransaction();
     }
 
-    /** 
+    /**
      * @param nombre
      * @param vida
      * @param nivelMagia
@@ -34,7 +33,7 @@ public class ControllerMago {
         return mago;
     }
 
-    /** 
+    /**
      * @return ArrayList<Mago>
      */
     // SELECT
@@ -44,7 +43,7 @@ public class ControllerMago {
         return listaMagos;
     }
 
-    /** 
+    /**
      * @param magoModificado
      */
     // UPDATE
@@ -54,14 +53,15 @@ public class ControllerMago {
         gestorTransaction.commit();
     }
 
-    /** 
+    /**
      * @param id
      */
     // DELETE
     public void eliminarMago(int id) {
         gestorTransaction.begin();
         Mago mago = gestorEntidades.find(Mago.class, id);
-        if (mago != null) gestorEntidades.remove(mago);
+        if (mago != null)
+            gestorEntidades.remove(mago);
         gestorTransaction.commit();
     }
 }

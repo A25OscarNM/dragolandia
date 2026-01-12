@@ -16,7 +16,7 @@ public class Main {
         Controller app = new Controller();
         app.showAllMonstruos();
 
-        // inicializar(app);
+        inicializar(app);
     }
 
     public static void inicializar(Controller app) {

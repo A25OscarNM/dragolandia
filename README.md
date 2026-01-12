@@ -22,3 +22,8 @@ https://www.mermaidchart.com/app/projects/68b5db7a-26e4-4b21-9c45-aa5d018cb49b/d
 
 ## Diseño Entidad relacción
 
+En construccion...
+
+## Manual de usuario
+
+Para saber mas haz [click](/ManualUsuario.md)

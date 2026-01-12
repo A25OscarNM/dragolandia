@@ -5,7 +5,6 @@ import java.util.List;
 import com.dragonlandia.modelo.Conjuro;
 import com.dragonlandia.modelo.Hechizo;
 import com.dragonlandia.modelo.Mago;
-import com.dragonlandia.vista.EmFactory;
 
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.EntityTransaction;
@@ -19,7 +18,7 @@ public class ControllerConjuro {
         gestorTransaction = gestorEntidades.getTransaction();
     }
 
-    /** 
+    /**
      * @param mago
      * @param hechizo
      */
@@ -32,7 +31,7 @@ public class ControllerConjuro {
         gestorTransaction.commit();
     }
 
-    /** 
+    /**
      * @param id
      * @return Conjuro
      */
@@ -40,19 +39,19 @@ public class ControllerConjuro {
     public Conjuro getConjuro(int id) {
         return gestorEntidades.find(Conjuro.class, id);
     }
-    
-    /** 
+
+    /**
      * @param idMago
      * @return List<Hechizo>
      */
     public List<Hechizo> getHechizosPorMago(int idMago) {
         return gestorEntidades.createQuery(
-            "SELECT c.hechizo FROM Conjuro c WHERE c.mago.id = :idMago", Hechizo.class)
-            .setParameter("idMago", idMago)
-            .getResultList();
+                "SELECT c.hechizo FROM Conjuro c WHERE c.mago.id = :idMago", Hechizo.class)
+                .setParameter("idMago", idMago)
+                .getResultList();
     }
 
-    /** 
+    /**
      * @param conjuro
      */
     // UPDATE
@@ -61,25 +60,27 @@ public class ControllerConjuro {
         gestorEntidades.merge(conjuro);
         gestorTransaction.commit();
     }
-    /** 
+
+    /**
      * @param id
      */
     // DELETE
     public void eliminarConjuro(int id) {
         gestorTransaction.begin();
         Conjuro conjuro = gestorEntidades.find(Conjuro.class, id);
-        if (conjuro != null) gestorEntidades.remove(conjuro);
+        if (conjuro != null)
+            gestorEntidades.remove(conjuro);
         gestorTransaction.commit();
     }
 
-    /** 
+    /**
      * @param idMago
      */
     public void borrarConjurosPorMago(int idMago) {
         gestorTransaction.begin();
         gestorEntidades.createQuery("DELETE FROM Conjuro c WHERE c.mago.id = :idMago")
-            .setParameter("idMago", idMago)
-            .executeUpdate();
+                .setParameter("idMago", idMago)
+                .executeUpdate();
         gestorTransaction.commit();
     }
 }
