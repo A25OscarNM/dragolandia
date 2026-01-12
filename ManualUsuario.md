@@ -20,31 +20,38 @@ con 3 campos para establecer el nombre, vida y nivel de magia del mago que quera
 
 #### Creacion de un Monstruo<a name="id12"></a>
 Para poder crear un monstruo tendremos que clicar en crear y seleccionamos Monstruo
+
 ![menu](/imgs/menu.png)
 
 
 En este tendremos un formulario con 3 campos para establecer el nombre, vida y tipo, este es un desplegable en el cual podemos selecionar el tipo de monstruo, cada tipo tiene unas caracteristicas de fuerza diferentes.
+
 ![manualMonstruo](/imgs/manualMonstruo.png)
 
 #### Creacion de un Bosque<a name="id13"></a>
 Para poder crear un bosque tendremos que clicar en crear y seleccionamos Bosque
+
 ![menu](/imgs/menu.png)
 
 
 En este tendremos un formulario con 3 campos para establecer el nombre, nivel de peligro y el monstruo jefe. En el desplegable podemos selecionar entre los monstruos posibles que tengamos creados. Además tendremos una tabla a la derecha donde nos saldran monstruos posibles que podemos agregar para el bosque, en la columna agregar podemos marcar los cuales queremos que pertenezcan a este.
+
 ![manualBosque](/imgs/manualBosque.png)
 
 #### Creacion de un Dragon<a name="id14"></a>
 Para poder crear un dragon tendremos que clicar en crear y seleccionamos Dragon
+
 ![menu](/imgs/menu.png)
 
 
 En este tendremos un formulario con 4 campos para establecer el nombre, intensidad de fuego(daño), resistencia(vida) y el bosque al que pertenece. En el desplegable podemos selecionar entre los bosques que tengamos creados.
+
 ![manualDragon](/imgs/manualDragon.png)
 
 ## Como jugar<a name="id2"></a>
 
 Para poder empezar una partida selecionaremos jugar en el menu.
+
 ![menu](/imgs/menuJugar.png)
 
 Ahora nos saldara un aviso con un desplegable donde nos dejaran escoger el bosque en el que combatir.
